@@ -1,5 +1,15 @@
-
+DROP TABLE if exists Evaluations;
+DROP TABLE if exists Inscriptions;
+DROP TABLE if exists Seances;
+DROP TABLE if exists Activites;
+DROP TABLE if exists Categories;
 DROP TABLE if exists Administrateur;
+DROP TABLE if exists Adherents;
+
+
+
+
+
 create table Administrateur (
 	id INT,
 	mdp VARCHAR(50),
@@ -18,7 +28,7 @@ insert into Administrateur (id, mdp) values (10, 'cR743226Y');
 
 
 
-DROP TABLE if exists Adherents;
+
 create table Adherents (
 	no_identification VARCHAR(11),
 	nom VARCHAR(50),
@@ -41,6 +51,9 @@ insert into Adherents ( nom, prenom, adresse, date_naissance) values ( 'Astill',
 insert into Adherents ( nom, prenom, adresse, date_naissance) values ('Welsh', 'Siegfried', '1 Hanover Court', '2006-06-03');
 insert into Adherents ( nom, prenom, adresse, date_naissance) values ( 'Choak', 'Bette-ann', '82244 Johnson Lane', '2005-06-05');
 
+-- test trigger verifier_age
+insert into Adherents ( nom, prenom, adresse, date_naissance) values ( 'Malvin', 'Betty', '82234 Johnson Lane', '2012-06-05');
+
 
 
 CREATE TABLE Categories (
@@ -56,7 +69,7 @@ INSERT INTO Categories (nom) VALUES ('Divertissements');
 INSERT INTO Categories (nom) VALUES ('Lectures');
 
 
-DROP TABLE if exists Activites;
+
 create table Activites (
 	nom VARCHAR(50),
 	id_categorie INT,
@@ -80,24 +93,47 @@ insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) v
 
 
 
-DROP TABLE if exists Seances;
 CREATE TABLE Seances (
     id INT AUTO_INCREMENT,
     nom_activite VARCHAR(50),
     date DATE ,
     heure TIME,
     nbr_places INT,
-    note INT,
+    note INT null,
     primary key (id),
     foreign key (nom_activite) references Activites(nom)
 );
 
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Canot-Camping', '2024-11-21', '14:00:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Escalade', '2024-12-04', '13:20:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Canot-Camping', '2024-08-21', '13:30:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Peintures', '2024-10-15', '12:20:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Volleyball', '2024-01-17', '12:10:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Tyrolienne', '2024-01-20', '11:20:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Via ferrata', '2024-02-02', '12:20:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Canot-Camping', '2024-11-22', '13:15:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Dentifrice d`éléphants', '2024-11-24', '12:25:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Canot-Camping', '2024-04-30', '10:40:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Équitation', '2024-11-30', '11:45:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Équitation', '2024-07-23', '13:10:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Cirque', '2024-11-21', '10:20:00' , 20, null);
+INSERT INTO Seances (nom_activite, date, heure, nbr_places, note) values ('Club de lecture', '2024-11-21', '09:20:00' , 20, null);
 
 
-DROP TABLE if exists Inscriptions;
+
+
 CREATE TABLE Inscriptions (
     id_adherent VARCHAR(11),
     id_seance INT,
+    PRIMARY KEY (id_adherent, id_seance),
+    foreign key (id_adherent) references Adherents(no_identification),
+    FOREIGN KEY (id_seance) references Seances(id)
+);
+
+CREATE TABLE Evaluations (
+    id_adherent VARCHAR(11),
+    id_seance INT,
+    note INT,
     PRIMARY KEY (id_adherent, id_seance),
     foreign key (id_adherent) references Adherents(no_identification),
     FOREIGN KEY (id_seance) references Seances(id)
@@ -107,17 +143,25 @@ CREATE TABLE Inscriptions (
 
 
 
+
+
 /* Création des triggers */
+DROP TRIGGER if exists calculer_age;
 DELIMITER //
 CREATE TRIGGER calculer_age
     BEFORE INSERT ON Adherents
     FOR EACH ROW
     BEGIN
         DECLARE ageCalcule INT;
-        SET ageCalcule = DATEDIFF(NEW.date_naissance, CURRENT_DATE());
+        SET ageCalcule = FLOOR((DATEDIFF(CURRENT_DATE(), NEW.date_naissance ))/365);
 
-        SET NEW.age = ageCalcule;
+        IF ageCalcule >= 18 THEN
+            SET NEW.age = ageCalcule;
 
+        ELSE SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Un Participant ne peut pas être ajouté. Son age doit être de plus de 18.';
+
+        end if ;
     end //
 DELIMITER ;
 
@@ -131,5 +175,134 @@ CREATE TRIGGER creer_numeroIdentification
         SET NEW.no_identification = CONCAT(SUBSTRING(NEW.prenom, 1, 1), SUBSTRING(NEW.nom, 1, 1), '-', YEAR(NEW.date_naissance), '-', FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1)))   );
     end //
 DELIMITER ;
+
+
+
+DELIMITER //
+CREATE TRIGGER gerer_nbrPlaces_seances
+    AFTER INSERT ON Inscriptions
+    FOR EACH ROW
+    BEGIN
+        DECLARE nbrPlaces INT ;
+        SET nbrPlaces = (SELECT nbr_places FROM Seances where id = NEW.id_seance) - 1;
+
+        UPDATE Seances SET nbr_places = nbrPlaces WHERE id = NEW.id_seance;
+
+
+    end //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER verifier_nombrePlaces_seances
+    BEFORE INSERT ON Inscriptions
+    FOR EACH ROW
+    BEGIN
+        IF (SELECT nbr_places FROM Seances WHERE id = NEW.id_seance) = 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un Participant ne peut pas être ajouté. Le nombre de places restantes est de 0.';
+
+
+        end if ;
+    end //
+DELIMITER ;
+
+DROP TRIGGER if exists verifier_evaluations;
+DELIMITER //
+CREATE TRIGGER verifier_evaluations
+    BEFORE INSERT ON Evaluations
+    FOR EACH ROW
+    BEGIN
+
+
+        DECLARE idSeanceEval INT;
+        DECLARE idAdherentsEval VARCHAR(11);
+        SET idSeanceEval = NEW.id_seance;
+        SET idAdherentsEval = NEW.id_adherent;
+
+
+
+        IF (SELECT COUNT(*) FROM Inscriptions WHERE Inscriptions.id_seance = idSeanceEval AND Inscriptions.id_adherent = idAdherentsEval ) <= 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un Participant ne peut pas donner de notes à une séance s`il n`est pas inscrits à celle-ci';
+        end if ;
+
+    end //
+DELIMITER ;
+
+
+DROP TRIGGER if exists moyenneNotes_seances;
+DELIMITER //
+CREATE TRIGGER moyenneNotes_seances
+    AFTER INSERT ON Evaluations
+    FOR EACH ROW
+    BEGIN
+
+        DECLARE nouvIdSeance INT ;
+        SET nouvIdSeance = NEW.id_seance;
+
+        UPDATE Seances SET note = (SELECT AVG(note)
+                                   FROM Evaluations
+                                   WHERE id_seance = nouvIdSeance) WHERE id = nouvIdSeance;
+
+
+    end //
+DELIMITER ;
+
+
+
+
+/* Création des procédures */
+DELIMITER //
+CREATE PROCEDURE insertion_inscriptions (IN idDeAdherent VARCHAR(11), IN idDeSeances INT)
+BEGIN
+    INSERT INTO Inscriptions (id_adherent, id_seance) VALUES (idDeAdherent, idDeSeances);
+end //
+DELIMITER ;
+
+CALL insertion_inscriptions('BC-2005-793', 1);
+CALL insertion_inscriptions('SW-2006-593', 1);
+CALL insertion_inscriptions('TM-2006-836', 2);
+CALL insertion_inscriptions('TM-2006-836', 3);
+
+
+
+DELIMITER //
+CREATE PROCEDURE insertion_evaluations (IN idDeAdherent VARCHAR(11), IN idDeSeances INT, IN noteDeSeances INT)
+BEGIN
+    INSERT INTO Evaluations (id_adherent, id_seance, note) VALUES (idDeAdherent, idDeSeances, noteDeSeances);
+end //
+DELIMITER ;
+
+CALL insertion_evaluations('BC-2005-793', 1, 5);
+CALL insertion_evaluations('AA-2005-557', 1, 4);
+CALL insertion_evaluations('TM-2006-836', 2, 4);
+CALL insertion_evaluations('TM-2006-836', 1, 4);
+CALL insertion_evaluations('TM-2006-836', 3, 4);
+
+
+/* Création des fonctions */
+
+DELIMITER //
+CREATE FUNCTION NbrAdherentsParActivites (nomActivite VARCHAR(50))
+RETURNS INT
+BEGIN
+    DECLARE nbrAdherents INT;
+
+    -- Comptage des inscrits pour l'activité spécifiée
+    SELECT COUNT(DISTINCT I.id_adherent)
+    INTO nbrAdherents
+    FROM Inscriptions I
+    INNER JOIN Seances S ON I.id_seance = S.id
+    WHERE S.nom_activite = nomActivite;
+
+    RETURN nbrAdherents;
+END //
+DELIMITER ;
+
+select nom,
+    NbrAdherentsParActivites(nom) AS nbr_participants
+FROM Activites;
+
 
 
