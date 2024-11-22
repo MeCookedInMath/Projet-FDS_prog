@@ -264,17 +264,7 @@ DELIMITER ;
 
 /* Insertion des données */
 
-CALL insertion_inscriptions('BC-2005-793', 1);
-CALL insertion_inscriptions('SW-2006-593', 1);
-CALL insertion_inscriptions('TM-2006-836', 2);
-CALL insertion_inscriptions('TM-2006-836', 3);
 
-
-CALL insertion_evaluations('BC-2005-793', 1, 5);
-CALL insertion_evaluations('AA-2005-557', 1, 4);
-CALL insertion_evaluations('TM-2006-836', 2, 4);
-CALL insertion_evaluations('TM-2006-836', 1, 4);
-CALL insertion_evaluations('TM-2006-836', 3, 4);
 
 
 
@@ -289,10 +279,10 @@ CALL insertion_adherents ( 'Coupar', 'Cello', '49627 Arapahoe Parkway', '2005-02
 CALL insertion_adherents ( 'Astill', 'Abigael', '06 Esker Plaza', '2005-03-13');
 CALL insertion_adherents ('Welsh', 'Siegfried', '1 Hanover Court', '2006-06-03');
 CALL insertion_adherents ( 'Choak', 'Bette-ann', '82244 Johnson Lane', '2005-06-05');
-
+/*
 -- test trigger verifier_age
 CALL insertion_adherents ( 'Malvin', 'Betty', '82234 Johnson Lane', '2012-06-05');
-
+*/
 
 
 
@@ -322,21 +312,33 @@ CALL insertion_activites ('Dentifrice d`éléphants', 2, 'Activité d`intérieur
 
 
 
-CALL insertion_seances ('Canot-Camping', '2024-11-21', '14:00:00' , 20, null);
-CALL insertion_seances ('Escalade', '2024-12-04', '13:20:00' , 20, null);
-CALL insertion_seances ('Canot-Camping', '2024-08-21', '13:30:00' , 20, null);
-CALL insertion_seances ('Peintures', '2024-10-15', '12:20:00' , 20, null);
-CALL insertion_seances ('Volleyball', '2024-01-17', '12:10:00' , 20, null);
-CALL insertion_seances ('Tyrolienne', '2024-01-20', '11:20:00' , 20, null);
-CALL insertion_seances ('Via ferrata', '2024-02-02', '12:20:00' , 20, null);
-CALL insertion_seances ('Canot-Camping', '2024-11-22', '13:15:00' , 20, null);
-CALL insertion_seances ('Dentifrice d`éléphants', '2024-11-24', '12:25:00' , 20, null);
-CALL insertion_seances ('Canot-Camping', '2024-04-30', '10:40:00' , 20, null);
-CALL insertion_seances ('Équitation', '2024-11-30', '11:45:00' , 20, null);
-CALL insertion_seances ('Équitation', '2024-07-23', '13:10:00' , 20, null);
-CALL insertion_seances ('Cirque', '2024-11-21', '10:20:00' , 20, null);
-CALL insertion_seances ('Club de lecture', '2024-11-21', '09:20:00' , 20, null);
+CALL insertion_seances ('Canot-Camping', '2024-11-21', '14:00:00' , 20);
+CALL insertion_seances ('Escalade', '2024-12-04', '13:20:00' , 20);
+CALL insertion_seances ('Canot-Camping', '2024-08-21', '13:30:00' , 20);
+CALL insertion_seances ('Peintures', '2024-10-15', '12:20:00' , 20);
+CALL insertion_seances ('Volleyball', '2024-01-17', '12:10:00' , 20);
+CALL insertion_seances ('Tyrolienne', '2024-01-20', '11:20:00' , 20);
+CALL insertion_seances ('Via ferrata', '2024-02-02', '12:20:00' , 20);
+CALL insertion_seances ('Canot-Camping', '2024-11-22', '13:15:00' , 20);
+CALL insertion_seances ('Dentifrice d`éléphants', '2024-11-24', '12:25:00' , 20);
+CALL insertion_seances ('Canot-Camping', '2024-04-30', '10:40:00' , 20);
+CALL insertion_seances ('Équitation', '2024-11-30', '11:45:00' , 20);
+CALL insertion_seances ('Équitation', '2024-07-23', '13:10:00' , 20);
+CALL insertion_seances ('Cirque', '2024-11-21', '10:20:00' , 20);
+CALL insertion_seances ('Club de lecture', '2024-11-21', '09:20:00' , 20);
 
+
+/* Ne pa oublier de changer les numéros d'identification des adhérents pour ceux nouvellement créés dans les insert inscriptions et evaluations*/
+CALL insertion_inscriptions('BC-2005-675', 1);
+CALL insertion_inscriptions('SW-2006-642', 1);
+CALL insertion_inscriptions('TM-2006-469', 2);
+CALL insertion_inscriptions('TM-2006-469', 3);
+
+
+CALL insertion_evaluations('BC-2005-675', 1, 5);
+CALL insertion_evaluations('SW-2006-642', 1, 4);
+CALL insertion_evaluations('TM-2006-469', 2, 4);
+CALL insertion_evaluations('TM-2006-469', 3, 4);
 
 
 /* Création des fonctions */
