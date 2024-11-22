@@ -130,6 +130,7 @@ CREATE TABLE Inscriptions (
     FOREIGN KEY (id_seance) references Seances(id)
 );
 
+<<<<<<< HEAD
 CREATE TABLE Evaluations (
     id_adherent VARCHAR(11),
     id_seance INT,
@@ -138,6 +139,9 @@ CREATE TABLE Evaluations (
     foreign key (id_adherent) references Adherents(no_identification),
     FOREIGN KEY (id_seance) references Seances(id)
 );
+=======
+INSERT INTO Inscriptions (id_adherent, id_seance) values ('AA-2005-623', 1);
+>>>>>>> ae65734ee5888d00d9be68a7f1806140e900a190
 
 
 
@@ -175,6 +179,61 @@ CREATE TRIGGER creer_numeroIdentification
         SET NEW.no_identification = CONCAT(SUBSTRING(NEW.prenom, 1, 1), SUBSTRING(NEW.nom, 1, 1), '-', YEAR(NEW.date_naissance), '-', FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1)))   );
     end //
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER gerer_nbrPlaces_seances
+    AFTER INSERT ON Inscriptions
+    FOR EACH ROW
+    BEGIN
+        DECLARE nbrPlaces INT ;
+        SET nbrPlaces = (SELECT nbr_places FROM Seances where id = NEW.id_seance) - 1;
+
+        UPDATE Seances SET nbr_places = nbrPlaces WHERE id = NEW.id_seance;
+
+
+    end //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER verifier_nombrePlaces_seances
+    BEFORE INSERT ON Inscriptions
+    FOR EACH ROW
+    BEGIN
+        IF (SELECT nbr_places FROM Seances WHERE id = NEW.id_seance) = 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un Participant ne peut pas être ajouté. Le nombre de places restantes est de 0.';
+
+
+        end if ;
+    end //
+DELIMITER ;
+
+
+/* Création des procédures */
+DELIMITER //
+CREATE PROCEDURE insertion_inscriptions (IN idDeAdherent VARCHAR(11), IN idDeSeances INT)
+BEGIN
+    INSERT INTO Inscriptions (id_adherent, id_seance) VALUES (idDeAdherent, idDeSeances);
+end //
+DELIMITER ;
+
+
+
+/* Création des fonctions */
+
+/* !!!!! pas fini !!!!!*/
+DELIMITER //
+CREATE FUNCTION NbrTotal_Adherents (nomActivite VARCHAR(11)) RETURNS INT
+BEGIN
+    SELECT COUNT(I.id_adherent)
+    FROM Activites
+    INNER JOIN Seances S on Activites.nom = S.nom_activite
+    INNER JOIN Inscriptions I on S.id = I.id_seance
+    GROUP BY S.id;
+end //
+DELIMITER ;
+
 
 
 
