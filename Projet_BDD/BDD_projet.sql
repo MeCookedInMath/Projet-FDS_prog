@@ -362,48 +362,51 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
-
-
-
-
-
-
-
-
-/* création des vues*/
+/*Création des vues */
 
 /*Vue 1 Trouver un participant ayant le nombre de séances le plus élevé*/
 
-DROP VIEW Participant_PlusSeance;
-CREATE VIEW  Participant_PlusSeance
-     AS SELECT SUM(id_seance), id_adherent
-       FROM Inscriptions
-       GROUP BY id_adherent ORDER BY id_adherent DESC LIMIT 1 ;
-
+DROP VIEW IF EXISTS Participant_PlusSeance;
+CREATE VIEW Participant_PlusSeance AS
+    SELECT A.no_identification, A.nom, A.prenom, COUNT(I.id_seance)
+        AS nombre_seances
+    FROM Inscriptions I
+    JOIN Adherents A ON I.id_adherent = A.no_identification
+    GROUP BY A.no_identification, A.nom, A.prenom
+    ORDER BY nombre_seances DESC
+    LIMIT 1;
 /*Vue 2 Trouver le prix moyen par activité pour chaque participant  */
 
-CREATE VIEW Moy_Prix_activite
+DROP VIEW IF EXISTS Moy_Prix_activite;
+CREATE VIEW Moy_Prix_activite AS
+    SELECT I.id_adherent, A.nom
+        AS activite_nom, AVG(A.prix_vente) AS prix_moyen
+    FROM Inscriptions I
+    JOIN Seances S ON I.id_seance = S.id
+    JOIN Activites A ON S.nom_activite = A.nom
+    GROUP BY I.id_adherent, A.nom;
 
 /*Vue 3  Afficher les notes d'appréciation pour chaque acticvité*/
 
-DROP VIEW Note_activite;
-CREATE VIEW Note_activite
-AS
-    SELECT s.note , id_seance
-FROM evaluations e
-INNER JOIN Seances S ON e.id_seance = S.id
-    ORDER BY S.nom_activite  ;
 
+DROP VIEW IF EXISTS Note_activite;
+CREATE VIEW Note_activite AS
+    SELECT A.nom AS activite_nom, E.note
+        AS note_participant, S.id AS id_seance
+    FROM Evaluations E
+    INNER JOIN Seances S ON E.id_seance = S.id
+    INNER JOIN Activites A ON S.nom_activite = A.nom
+    ORDER BY activite_nom, S.id;
 /*Vue 4 Afficher la moyenne des notes pour chaque activité */
-DROP VIEW Moyenne_Note;
-CREATE VIEW Moyenne_Note
-    AS
-    SELECT AVG(s.note) AS moyenne, id_seance
-FROM evaluations e
-INNER JOIN Seances S ON e.id_seance = S.id
-    GROUP BY id_seance ORDER BY moyenne  ;
+DROP VIEW IF EXISTS Moyenne_Note;
+CREATE VIEW Moyenne_Note AS
+    SELECT A.nom AS activite_nom, AVG(E.note)
+        AS moyenne
+    FROM Evaluations E
+    INNER JOIN Seances S ON E.id_seance = S.id
+    INNER JOIN Activites A ON S.nom_activite = A.nom
+    GROUP BY A.nom
+    ORDER BY moyenne;
 
 /*Vue 5 Afficher le nombre de participant par activité*/
 DROP VIEW Nbr_Participants_Activite;
