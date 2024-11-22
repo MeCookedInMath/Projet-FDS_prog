@@ -364,4 +364,46 @@ select nom,
 FROM Activites;
 
 
+/* création des vues*/
+
+/*Vue 1 Trouver un participant ayant le nombre de séances le plus élevé*/
+
+DROP VIEW Participant_PlusSeance;
+CREATE VIEW  Participant_PlusSeance
+     AS SELECT SUM(id_seance), id_adherent
+       FROM Inscriptions
+       GROUP BY id_adherent ORDER BY id_adherent DESC LIMIT 1 ;
+
+/*Vue 2 Trouver le prix moyen par activité pour chaque participant  */
+
+CREATE VIEW Moy_Prix_activite
+
+/*Vue 3  Afficher les notes d'appréciation pour chaque acticvité*/
+
+DROP VIEW Note_activite;
+CREATE VIEW Note_activite
+AS
+    SELECT s.note , id_seance
+FROM evaluations e
+INNER JOIN Seances S ON e.id_seance = S.id
+    ORDER BY S.nom_activite  ;
+
+/*Vue 4 Afficher la moyenne des notes pour chaque activité */
+DROP VIEW Moyenne_Note;
+CREATE VIEW Moyenne_Note
+    AS
+    SELECT AVG(s.note) AS moyenne, id_seance
+FROM evaluations e
+INNER JOIN Seances S ON e.id_seance = S.id
+    GROUP BY id_seance ORDER BY moyenne  ;
+
+/*Vue 5 Afficher le nombre de participant par activité*/
+DROP VIEW Nbr_Participants_Activite;
+CREATE VIEW Nbr_Participants_Activite
+    AS
+   select nom,
+    NbrAdherentsParActivites(nom) AS nbr_participants
+FROM Activites;
+
+/*Vue 6*/
 
