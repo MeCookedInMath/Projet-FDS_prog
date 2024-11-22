@@ -74,22 +74,21 @@ create table Activites (
 	nom VARCHAR(50),
 	id_categorie INT,
 	type VARCHAR(50),
-	cout_organisation VARCHAR(50),
-	prix_vente VARCHAR(50),
+	cout_organisation DOUBLE,
+	prix_vente DOUBLE,
 	primary key (nom),
 	foreign key (id_categorie) references categories (id)
 );
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Canot-Camping', 1, 'Plein-air', '$228.90', '$138.09');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Escalade', 1, 'Ludo-sportive', '$169.02', '$189.26');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Peintures', 3, 'Peintures', '$288.13', '$209.42');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Volleyball', 1, 'Activité d`intérieur', '$202.60', '$192.33');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Cirque', 4, 'Spectacle', '$297.79', '$220.15');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Équitation', 1, 'Plein air', '$235.72', '$214.00');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Club de lecture', 5, 'Lecture', '$153.43', '$159.17');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Tyrolienne', 4, 'Plein air', '$178.32', '$292.27');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Via ferrata', 1, 'Plein air', '$264.24', '$275.55');
-insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Dentifrice d`éléphants', 2, 'Activité d`intérieur', '$178.06', '$127.03');
-
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Canot-Camping', 1, 'Plein-air', 228.90, 138.09);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Escalade', 1, 'Ludo-sportive', 169.02, 189.26);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Peintures', 3, 'Peintures', 288.13, 209.42);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Volleyball', 1, 'Activité d`intérieur', 202.60, 192.33);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Cirque', 4, 'Spectacle', 297.79, 220.15);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Équitation', 1, 'Plein air', 235.72, 214.00);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Club de lecture', 5, 'Lecture', 153.43, 159.17);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Tyrolienne', 4, 'Plein air', 178.32, 292.27);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Via ferrata', 1, 'Plein air', 264.24, 275.55);
+insert into Activites (nom, id_categorie, type, cout_organisation, prix_vente) values ('Dentifrice d`éléphants', 2, 'Activité d`intérieur', 178.06, 127.03);
 
 
 
@@ -130,7 +129,6 @@ CREATE TABLE Inscriptions (
     FOREIGN KEY (id_seance) references Seances(id)
 );
 
-<<<<<<< HEAD
 CREATE TABLE Evaluations (
     id_adherent VARCHAR(11),
     id_seance INT,
@@ -139,9 +137,6 @@ CREATE TABLE Evaluations (
     foreign key (id_adherent) references Adherents(no_identification),
     FOREIGN KEY (id_seance) references Seances(id)
 );
-=======
-INSERT INTO Inscriptions (id_adherent, id_seance) values ('AA-2005-623', 1);
->>>>>>> ae65734ee5888d00d9be68a7f1806140e900a190
 
 
 
@@ -208,32 +203,6 @@ CREATE TRIGGER verifier_nombrePlaces_seances
         end if ;
     end //
 DELIMITER ;
-
-
-/* Création des procédures */
-DELIMITER //
-CREATE PROCEDURE insertion_inscriptions (IN idDeAdherent VARCHAR(11), IN idDeSeances INT)
-BEGIN
-    INSERT INTO Inscriptions (id_adherent, id_seance) VALUES (idDeAdherent, idDeSeances);
-end //
-DELIMITER ;
-
-
-
-/* Création des fonctions */
-
-/* !!!!! pas fini !!!!!*/
-DELIMITER //
-CREATE FUNCTION NbrTotal_Adherents (nomActivite VARCHAR(11)) RETURNS INT
-BEGIN
-    SELECT COUNT(I.id_adherent)
-    FROM Activites
-    INNER JOIN Seances S on Activites.nom = S.nom_activite
-    INNER JOIN Inscriptions I on S.id = I.id_seance
-    GROUP BY S.id;
-end //
-DELIMITER ;
-
 
 
 
@@ -338,6 +307,38 @@ CALL insertion_evaluations('AA-2005-557', 1, 4);
 CALL insertion_evaluations('TM-2006-836', 2, 4);
 CALL insertion_evaluations('TM-2006-836', 1, 4);
 CALL insertion_evaluations('TM-2006-836', 3, 4);
+
+DELIMITER //
+CREATE PROCEDURE insertion_seances ( IN seance_nomActivite VARCHAR(50), IN seance_date DATE, IN seance_heure TIME, IN seance_nbrPlace INT )
+BEGIN
+    INSERT INTO Seances (nom_activite, date, heure, nbr_places ) VALUES (seance_nomActivite, seance_date, seance_heure, seance_nbrPlace);
+end //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertion_categories (  IN categorie_nom VARCHAR(50) )
+BEGIN
+    INSERT INTO Categories (nom) VALUES (categorie_nom);
+end //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertion_activites (  IN activites_nom VARCHAR(50), IN activites_categorieId INT,IN activites_type VARCHAR(50), IN activites_coutOrganisation DOUBLE, IN activites_prixVente DOUBLE )
+BEGIN
+    INSERT INTO Activites (nom, id_categorie, type, cout_organisation, prix_vente) VALUES (activites_nom, activites_categorieId, activites_type, activites_coutOrganisation, activites_prixVente);
+end //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE insertion_adherents (  IN adherents_nom VARCHAR(50), IN adherents_prenom VARCHAR(50),IN adherents_adresse VARCHAR(50), IN adherents_dateNaissance DATE)
+BEGIN
+    INSERT INTO Adherents ( nom, prenom, adresse, date_naissance) VALUES (adherents_nom, adherents_prenom, adherents_adresse, adherents_dateNaissance);
+end //
+DELIMITER ;
+
 
 
 /* Création des fonctions */
