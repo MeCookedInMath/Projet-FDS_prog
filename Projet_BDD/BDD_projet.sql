@@ -362,6 +362,146 @@ BEGIN
 END //
 DELIMITER ;
 
+
+
+DROP FUNCTION if exists NbrAdherentsParMois;
+DELIMITER //
+CREATE FUNCTION NbrAdherentsParMois ( mois VARCHAR(50))
+RETURNS INT
+BEGIN
+    DECLARE nbrAdherents INT;
+
+    SELECT COUNT(DISTINCT I.id_adherent)
+    INTO nbrAdherents
+    FROM Inscriptions I
+    INNER JOIN Seances S ON I.id_seance = S.id
+    WHERE SUBSTRING(S.date, 6, 2) = mois;
+
+    RETURN nbrAdherents;
+END //
+DELIMITER ;
+
+
+
+DROP FUNCTION IF EXISTS NbrAdherentsInscritsAPLusieursActivites;
+DELIMITER //
+CREATE FUNCTION NbrAdherentsInscritsAPLusieursActivites()
+RETURNS INT
+BEGIN
+    DECLARE nbrAdherents INT;
+
+    SELECT COUNT(DISTINCT I.id_adherent)
+    INTO nbrAdherents
+    FROM Inscriptions I
+    INNER JOIN Seances S ON I.id_seance = S.id
+    GROUP BY I.id_adherent
+    HAVING COUNT(DISTINCT S.nom_activite) > 1;
+
+    RETURN nbrAdherents;
+END //
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS nbrTotal_Activites;
+DELIMITER //
+CREATE FUNCTION nbrTotal_Activites()
+RETURNS INT
+BEGIN
+
+    DECLARE nbrActivites INT;
+
+    SELECT COUNT(Activites.nom) into nbrActivites FROM Activites;
+
+    RETURN nbrActivites;
+END //
+DELIMITER ;
+
+
+
+DROP FUNCTION IF EXISTS nbrTotal_Adherents;
+DELIMITER //
+CREATE FUNCTION nbrTotal_Adherents()
+RETURNS INT
+BEGIN
+
+    DECLARE nbrAdherents INT;
+
+    SELECT COUNT(Adherents.no_identification) into nbrAdherents FROM Adherents;
+
+    RETURN nbrAdherents;
+END //
+DELIMITER ;
+
+DROP FUNCTION if exists moyenneNotesParActivite;
+DELIMITER //
+CREATE FUNCTION moyenneNotesParActivite(nomActivite VARCHAR(50))
+RETURNS DOUBLE
+BEGIN
+    DECLARE moyenneNote DOUBLE;
+
+
+    SELECT AVG(E.note)
+    INTO moyenneNote
+    FROM Evaluations E
+    INNER JOIN Seances S ON E.id_seance = S.id
+    WHERE S.nom_activite = nomActivite;
+
+    IF moyenneNote IS NULL THEN
+        SET moyenneNote = 0;
+    END IF;
+
+    RETURN moyenneNote;
+END //
+DELIMITER ;
+
+
+DROP FUNCTION if exists nbrSeancesParActivite;
+DELIMITER //
+CREATE FUNCTION nbrSeancesParActivite (nomActivite VARCHAR(50)) RETURNS INT
+BEGIN
+
+    DECLARE nbrSeances INT;
+    SELECT COUNT(Seances.id)
+    INTO nbrSeances
+    FROM Seances
+    INNER JOIN Activites ON Seances.nom_activite = Activites.nom
+    WHERE Activites.nom = nomActivite;
+
+    RETURN nbrSeances;
+END //
+DELIMITER ;
+
+
+
+DROP FUNCTION IF EXISTS moyenneAgeAdherents;
+DELIMITER //
+CREATE FUNCTION moyenneAgeAdherents()
+RETURNS DOUBLE
+BEGIN
+    DECLARE moyenneAge DOUBLE;
+    SELECT AVG(age) INTO moyenneAge FROM Adherents;
+    RETURN moyenneAge;
+END //
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS activiteAvecPlusInscriptions;
+DELIMITER //
+CREATE FUNCTION activiteAvecPlusInscriptions()
+RETURNS VARCHAR(50)
+BEGIN
+    DECLARE activitePopulaire VARCHAR(50);
+    SELECT S.nom_activite
+    INTO activitePopulaire
+    FROM Seances S
+    INNER JOIN Inscriptions I ON S.id = I.id_seance
+    GROUP BY S.nom_activite
+    ORDER BY COUNT(I.id_adherent) DESC
+    LIMIT 1;
+    RETURN activitePopulaire;
+END //
+DELIMITER ;
+
 /*Création des vues */
 
 /*Vue 1 Trouver un participant ayant le nombre de séances le plus élevé*/
@@ -416,5 +556,11 @@ CREATE VIEW Nbr_Participants_Activite
     NbrAdherentsParActivites(nom) AS nbr_participants
 FROM Activites;
 
-/*Vue 6*/
+/*Vue 6  Afficher le nombre de participants par mois*/
+DROP VIEW if exists Nbr_Participants_Mois;
+CREATE VIEW Nbr_Participants_Mois
+    AS
+   select DISTINCT(SUBSTRING(date, 6, 2)) AS mois,
+    NbrAdherentsParMois(SUBSTRING(date, 6, 2)) AS nbr_participants
+FROM Seances;
 
