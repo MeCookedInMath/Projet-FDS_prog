@@ -102,7 +102,59 @@ CREATE TRIGGER calculer_age
     BEFORE INSERT ON Adherents
     FOR EACH ROW
     BEGIN
+
+        DECLARE erreur_nom CONDITION FOR SQLSTATE '73000';
+        DECLARE erreur_prenom CONDITION FOR SQLSTATE '74000';
+        DECLARE erreur_adresse CONDITION FOR SQLSTATE '75000';
+        DECLARE erreur_dateNaissance CONDITION FOR SQLSTATE '76000';
+
+
         DECLARE ageCalcule INT;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '73000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La valeur entrée pour le nom du participant ne peut pas être numérique ou contenir de chiffres.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '74000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La valeur entrée pour le prénom du participant ne peut pas être numérique ou contenir de chiffres.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '75000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'L`adresse du participant n`est pas valide car elle n`a pas été rentré au bon format.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '76000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La date de naissance n`est pas valide car elle n`a pas été rentrée au bon format.';
+            end ;
+
+
+        IF NEW.nom REGEXP '[0-9]' THEN
+            SIGNAL erreur_nom;
+        END IF;
+
+        -- Vérifier si le prénom contient des chiffres
+        IF NEW.prenom REGEXP '[0-9]' THEN
+            SIGNAL erreur_prenom;
+        END IF ;
+
+        IF NEW.adresse REGEXP '^[0-9]+[ ]+[A-Za-zéèàôêù\s\'-]+$' THEN
+            SIGNAL erreur_adresse;
+        END IF ;
+
+        IF DATE(NEW.date_naissance) is null THEN
+            SIGNAL erreur_dateNaissance;
+        END IF ;
+
+        IF (SELECT COUNT(*) FROM Adherents WHERE nom = NEW.nom AND prenom = NEW.prenom) > 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un participant ne peut pas avoir deux numéros d`identification.';
+        end if ;
+
+
         SET ageCalcule = FLOOR((DATEDIFF(CURRENT_DATE(), NEW.date_naissance ))/365);
 
         IF ageCalcule >= 18 THEN
@@ -112,16 +164,23 @@ CREATE TRIGGER calculer_age
             SET MESSAGE_TEXT = 'Un Participant ne peut pas être ajouté. Son age doit être de plus de 18.';
 
         end if ;
+
+
     end //
 DELIMITER ;
 
 
-
+DROP TRIGGER if exists creer_numeroIdentification;
 DELIMITER //
 CREATE TRIGGER creer_numeroIdentification
     BEFORE INSERT ON Adherents
     FOR EACH ROW
     BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'Le numéro d`identification du nouveau participant n`a pas pu être créé car son nom, son prénom ou son age n``était pas conforme.';
+            end ;
+
         SET NEW.no_identification = CONCAT(SUBSTRING(NEW.prenom, 1, 1), SUBSTRING(NEW.nom, 1, 1), '-', YEAR(NEW.date_naissance), '-', FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1))),  FLOOR(1+(RAND()*(9 - 1 + 1)))   );
     end //
 DELIMITER ;
@@ -133,6 +192,8 @@ CREATE TRIGGER gerer_nbrPlaces_seances
     AFTER INSERT ON Inscriptions
     FOR EACH ROW
     BEGIN
+
+
         DECLARE nbrPlaces INT ;
         SET nbrPlaces = (SELECT nbr_places FROM Seances where id = NEW.id_seance) - 1;
 
@@ -208,6 +269,12 @@ DROP PROCEDURE if exists insertion_inscriptions;
 DELIMITER //
 CREATE PROCEDURE insertion_inscriptions (IN idDeAdherent VARCHAR(11), IN idDeSeances INT)
 BEGIN
+
+    DECLARE CONTINUE HANDLER FOR 1062
+        BEGIN
+            SELECT 'Le participants est déjà inscrits à cette séance.';
+        end ;
+
     INSERT INTO Inscriptions (id_adherent, id_seance) VALUES (idDeAdherent, idDeSeances);
 end //
 DELIMITER ;
@@ -219,6 +286,12 @@ DROP PROCEDURE if exists insertion_evaluations;
 DELIMITER //
 CREATE PROCEDURE insertion_evaluations (IN idDeAdherent VARCHAR(11), IN idDeSeances INT, IN noteDeSeances INT)
 BEGIN
+
+    DECLARE CONTINUE HANDLER FOR 1062
+        BEGIN
+            SELECT 'Ce participants a déjà donné une note pour cette activité';
+        end ;
+
     INSERT INTO Evaluations (id_adherent, id_seance, note) VALUES (idDeAdherent, idDeSeances, noteDeSeances);
 end //
 DELIMITER ;
@@ -279,11 +352,10 @@ CALL insertion_adherents ( 'Coupar', 'Cello', '49627 Arapahoe Parkway', '2005-02
 CALL insertion_adherents ( 'Astill', 'Abigael', '06 Esker Plaza', '2005-03-13');
 CALL insertion_adherents ('Welsh', 'Siegfried', '1 Hanover Court', '2006-06-03');
 CALL insertion_adherents ( 'Choak', 'Bette-ann', '82244 Johnson Lane', '2005-06-05');
-/*
--- test trigger verifier_age
-CALL insertion_adherents ( 'Malvin', 'Betty', '82234 Johnson Lane', '2012-06-05');
-*/
 
+/* test trigger pour insertion d'adhérents
+CALL insertion_adherents ( 'Malvin', 'Betty', '82234 Johnson Lane', '2001-06-05');
+*/
 
 
 
@@ -328,17 +400,18 @@ CALL insertion_seances ('Cirque', '2024-11-21', '10:20:00' , 20);
 CALL insertion_seances ('Club de lecture', '2024-11-21', '09:20:00' , 20);
 
 
-/* Ne pa oublier de changer les numéros d'identification des adhérents pour ceux nouvellement créés dans les insert inscriptions et evaluations*/
-CALL insertion_inscriptions('BC-2005-675', 1);
-CALL insertion_inscriptions('SW-2006-642', 1);
-CALL insertion_inscriptions('TM-2006-469', 2);
-CALL insertion_inscriptions('TM-2006-469', 3);
+CALL insertion_inscriptions('BC-2005-914', 1);
+CALL insertion_inscriptions('SW-2006-832', 1);
+CALL insertion_inscriptions('TM-2006-653', 2);
+CALL insertion_inscriptions('TM-2006-653', 3);
+CALL insertion_inscriptions('TM-2006-653', 3);
+CALL insertion_inscriptions('TM-2006-653', 4);
 
 
-CALL insertion_evaluations('BC-2005-675', 1, 5);
-CALL insertion_evaluations('SW-2006-642', 1, 4);
-CALL insertion_evaluations('TM-2006-469', 2, 4);
-CALL insertion_evaluations('TM-2006-469', 3, 4);
+CALL insertion_evaluations('BC-2005-914', 1, 5);
+CALL insertion_evaluations('SW-2006-832', 1, 4);
+CALL insertion_evaluations('TM-2006-653', 2, 4);
+CALL insertion_evaluations('TM-2006-653', 3, 4);
 
 
 /* Création des fonctions */
@@ -371,6 +444,7 @@ RETURNS INT
 BEGIN
     DECLARE nbrAdherents INT;
 
+    -- Comptage des inscrits pour l'activité spécifiée
     SELECT COUNT(DISTINCT I.id_adherent)
     INTO nbrAdherents
     FROM Inscriptions I
@@ -390,6 +464,7 @@ RETURNS INT
 BEGIN
     DECLARE nbrAdherents INT;
 
+    -- Comptage des adhérents inscrits à plus d'une activité
     SELECT COUNT(DISTINCT I.id_adherent)
     INTO nbrAdherents
     FROM Inscriptions I
@@ -439,7 +514,7 @@ RETURNS DOUBLE
 BEGIN
     DECLARE moyenneNote DOUBLE;
 
-
+    -- Calcul de la moyenne des notes pour l'activité donnée
     SELECT AVG(E.note)
     INTO moyenneNote
     FROM Evaluations E
@@ -501,6 +576,8 @@ BEGIN
     RETURN activitePopulaire;
 END //
 DELIMITER ;
+
+
 
 /*Création des vues */
 
