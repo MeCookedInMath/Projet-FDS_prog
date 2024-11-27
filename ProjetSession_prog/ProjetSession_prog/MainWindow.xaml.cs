@@ -26,11 +26,35 @@ namespace ProjetSession_prog
         public MainWindow()
         {
             this.InitializeComponent();
+            
+            mainFrame.Navigate(typeof(Authentification));
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+
+
+        private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            myButton.Content = "Clicked";
+            var item = (NavigationViewItem)args.SelectedItem;
+
+            switch (item.Name)
+            {
+                case "iAuthentification":
+                    mainFrame.Navigate(typeof(Authentification));
+                    break;
+                case "iStatistiques":
+                    mainFrame.Navigate(typeof(Statistiques));
+                    break;
+                case "iAffichage":
+                    mainFrame.Navigate(typeof(Affichage));
+                    break;
+
+
+                default:
+                    break;
+            }
+
         }
+
+
     }
 }

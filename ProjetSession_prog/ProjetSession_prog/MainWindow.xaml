@@ -7,7 +7,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click moi allo</Button>
-    </StackPanel>
+    <NavigationView PaneDisplayMode="Left" PaneTitle="Site de gestion de produits" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
+        <NavigationView.MenuItems>
+            <NavigationViewItemHeader Content="Équipes"/>
+            <NavigationViewItem Content="Authentification" x:Name="iAuthentification" Icon="People" Background="IndianRed" Tag="Page1"/>
+            <NavigationViewItemSeparator />
+            <NavigationViewItem Content="Statistiques" x:Name="iStatistiques" Icon="Add" Background="DarkOliveGreen" Tag="Page2"/>
+            <NavigationViewItemSeparator />
+            <NavigationViewItem Content="Affichage" x:Name="iAffichage" Icon="People" Background="IndianRed" Tag="Page1"/>
+            <NavigationViewItemSeparator />
+
+
+        </NavigationView.MenuItems>
+
+        <Frame x:Name="mainFrame" Grid.Row="1" />
+
+
+
+    </NavigationView>
 </Window>
