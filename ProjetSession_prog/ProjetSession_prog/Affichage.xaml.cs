@@ -28,7 +28,7 @@ namespace ProjetSession_prog
             this.InitializeComponent(); 
             if (Singleton.getInstance().IsSetConnection() == false)
             {
-                mainFrame.Navigate(typeof(Authentification));
+           
             }
         }
     }

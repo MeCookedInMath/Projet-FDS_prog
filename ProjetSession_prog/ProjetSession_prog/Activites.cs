@@ -15,7 +15,7 @@ namespace ProjetSession_prog
         double prix_vente;
 
 
-        public Adherents(string _nom, int _id_categorie, string _type, double _cout_organisation, double _prix_vente)
+        public Activites(string _nom, int _id_categorie, string _type, double _cout_organisation, double _prix_vente)
         {
             this.nom = _nom;
             this.id_categorie = _id_categorie;
