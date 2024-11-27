@@ -187,6 +187,32 @@ DELIMITER ;
 
 
 
+DROP TRIGGER if exists drop_seances;
+DELIMITER //
+CREATE TRIGGER drop_seances
+    BEFORE DELETE ON Seances
+    FOR EACH ROW
+    BEGIN
+        DELETE FROM Evaluations WHERE id_seance = OLD.id;
+
+        DELETE FROM Inscriptions WHERE id_seance = OLD.id;
+    end //
+DELIMITER ;
+
+
+
+DROP TRIGGER if exists drop_activites;
+DELIMITER //
+CREATE TRIGGER drop_activites
+    BEFORE DELETE ON Activites
+    FOR EACH ROW
+    BEGIN
+        DELETE FROM Seances WHERE nom_activite = OLD.nom;
+    end //
+DELIMITER ;
+
+
+
 DELIMITER //
 CREATE TRIGGER gerer_nbrPlaces_seances
     AFTER INSERT ON Inscriptions
@@ -336,9 +362,9 @@ BEGIN
         SELECT 'Erreur : L\'adhérent n\'a pas pu être ajouté. Vérifiez les données et réessayez.' AS message;
         RESIGNAL;
     END;
-    INSERT INTO Adherents (nom, prenom, adresse, date_naissance) 
+    INSERT INTO Adherents (nom, prenom, adresse, date_naissance)
     VALUES (adherents_nom, adherents_prenom, adherents_adresse, adherents_dateNaissance);
-    
+
 END //
 
 DELIMITER ;
