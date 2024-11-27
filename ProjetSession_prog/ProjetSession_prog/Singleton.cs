@@ -116,6 +116,50 @@ namespace ProjetSession_prog
             return listeActivites;
         }
 
+        public List<Seances> getListeSeancesPourActivites(string nomActivite)
+        {
+            List<Seances> listeSeances = new List<Seances>();
+            try
+            {
+
+
+                Boolean valide = true;
+
+
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"Select * from seances where nom_activite = '{nomActivite}' ";
+                con.Open();
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    //for (global::System.Int32 i = 0; i < listeActivites.Count; i++)
+                    //{
+                    //    if (listeActivites[i].Nom == r["nom"].ToString())
+                    //    {
+                    //        valide = false;
+                    //    }
+                    //}
+
+                    //if (valide)
+                    //{
+                    //    listeActivites.Add(new Activites(r["nom"].ToString(), Convert.ToInt32(r["id_categorie"]), r["type"].ToString(), Convert.ToDouble(r["cout_organisation"].ToString()), Convert.ToDouble(r["prix_vente"].ToString())));
+                    //}
+                    listeSeances.Add(new Seances(25, nomActivite, "15-02-2024", "12:00", 50, 3.5));
+
+                }
+
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+
+            return listeSeances;
+        }
 
 
         public ObservableCollection<Adherents> getListeAdherents()

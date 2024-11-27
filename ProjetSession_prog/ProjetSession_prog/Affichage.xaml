@@ -11,23 +11,24 @@
 
     <Grid>
 
-        <Grid.RowDefinitions>
+        
+
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>-->
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Page affichage"/>
 
 
 
-        <StackPanel x:Name="stckpnl_adherents" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="3">
+        <!--<StackPanel x:Name="stckpnl_adherents" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
 
             <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <GridView.ItemTemplate >
@@ -53,57 +54,54 @@
                 </GridView.ItemTemplate>
             </GridView>
 
-        </StackPanel>
+        <!--</StackPanel>-->
 
-        <StackPanel x:Name="stckpnl_activites" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">
+        <!--<StackPanel x:Name="stckpnl_activites" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
 
-            <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Activites" >
                         <StackPanel Width="200" Padding="15" Margin="50" Background="DarkOliveGreen" CornerRadius="30">
-                            <StackPanel Orientation="Vertical"
+                        <StackPanel Orientation="Vertical"
                                 Margin="5" HorizontalAlignment="Stretch">
-                                <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Type}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Cout_organisation}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Prix_vente}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Type}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Cout_organisation}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Prix_vente}" Margin="5,5,5,10"/>
+                            <RatingControl Value="3" />
 
+                            <Button x:Name="afficher_seances" >
 
-                                <Button x:Name="supprimer_click" Click="supprimer_click" >
-                                    <SymbolIcon Symbol="Delete" />
-                                </Button>
-                            </StackPanel>
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <StackPanel>
+                                            <ListView Header="Liste des séances" ItemsSource="{x:Bind Seances}" SelectionChanged="ListView_SelectionChanged">
+                                                
+                                            </ListView>
+                                            <Button  Content="Yes, empty my cart" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+
+                                <SymbolIcon Symbol="Send" />
+
+                            </Button>
+
+                            <Button x:Name="supprimer_click" Click="supprimer_click" >
+                                <SymbolIcon Symbol="Delete" />
+                            </Button>
+
                         </StackPanel>
+                    </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
 
-        </StackPanel>
+        <!--</StackPanel>-->
 
 
-        <StackPanel x:Name="stckpnl_activites" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">
-
-            <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <GridView.ItemTemplate >
-                    <DataTemplate x:DataType="local:Activites" >
-                        <StackPanel Width="200" Padding="15" Margin="50" Background="DarkOliveGreen" CornerRadius="30">
-                            <StackPanel Orientation="Vertical"
-                                Margin="5" HorizontalAlignment="Stretch">
-                                <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Type}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Cout_organisation}" Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Prix_vente}" Margin="5,5,5,10"/>
-
-
-                                <Button x:Name="supprimer_click" Click="supprimer_click" >
-                                    <SymbolIcon Symbol="Delete" />
-                                </Button>
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
-
-        </StackPanel>
+        
+        
+        <Frame x:Name="main_frame"/>
     </Grid>
 </Page>

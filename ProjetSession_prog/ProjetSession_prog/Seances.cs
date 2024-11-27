@@ -53,6 +53,13 @@ namespace ProjetSession_prog
             set { heure = value; }
         }
 
+
+        public int Nbr_Places
+        {
+            get { return nbr_places; }
+            set { nbr_places = value; }
+        }
+
         public double Note
         {
             get { return note; }

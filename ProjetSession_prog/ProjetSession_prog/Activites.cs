@@ -13,6 +13,7 @@ namespace ProjetSession_prog
         string type;
         double cout_organisation;
         double prix_vente;
+        List<Seances> seances;
 
 
         public Activites(string _nom, int _id_categorie, string _type, double _cout_organisation, double _prix_vente)
@@ -52,6 +53,12 @@ namespace ProjetSession_prog
         {
             get { return prix_vente; }
             set { prix_vente = value; }
+        }
+
+        public List<Seances> Seances
+        {
+            get { return Singleton.getInstance().getListeSeancesPourActivites(nom); }
+            set { seances = value; }
         }
 
         public override string ToString()

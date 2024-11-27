@@ -16,11 +16,12 @@
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Affichage" x:Name="iAffichage" Icon="People" Background="IndianRed" Tag="Page1"/>
             <NavigationViewItemSeparator />
+            
 
 
         </NavigationView.MenuItems>
 
-        <Frame x:Name="mainFrame" Grid.Row="1" />
+        <Frame x:Name="mainFrame" />
 
 
 

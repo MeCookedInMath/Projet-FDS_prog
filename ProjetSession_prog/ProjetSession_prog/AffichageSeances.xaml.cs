@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -21,30 +21,11 @@ namespace ProjetSession_prog
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Affichage : Page
+    public sealed partial class AffichageSeances : Page
     {
-        public Affichage()
+        public AffichageSeances()
         {
-            this.InitializeComponent();  
-            liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
-            liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
-
-        }
-
-        private void supprimer_click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ListView listView = sender as ListView;
-            Activites activites = listView.DataContext as Activites;
-            Seances seances = listView.SelectedItem as Seances;
-
-
+            this.InitializeComponent();
         }
     }
 }
