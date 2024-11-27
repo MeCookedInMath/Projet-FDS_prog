@@ -316,6 +316,14 @@ end //
 DELIMITER ;
 
 
+DROP PROCEDURE if exists insertion_activites;
+DELIMITER //
+CREATE PROCEDURE insertion_activites (  IN activites_nom VARCHAR(50), IN activites_categorieId INT,IN activites_type VARCHAR(50), IN activites_coutOrganisation DOUBLE, IN activites_prixVente DOUBLE )
+BEGIN
+    INSERT INTO Activites (nom, id_categorie, type, cout_organisation, prix_vente) VALUES (activites_nom, activites_categorieId, activites_type, activites_coutOrganisation, activites_prixVente);
+end //
+DELIMITER ;
+
 DROP PROCEDURE IF EXISTS insertion_adherents;
 
 DELIMITER //
