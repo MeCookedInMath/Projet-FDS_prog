@@ -25,11 +25,15 @@ namespace ProjetSession_prog
     {
         public Affichage()
         {
-            this.InitializeComponent(); 
-            if (Singleton.getInstance().IsSetConnection() == false)
-            {
-                mainFrame.Navigate(typeof(Authentification));
-            }
+            this.InitializeComponent();  
+            liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
+            liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
+
+        }
+
+        private void supprimer_click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
