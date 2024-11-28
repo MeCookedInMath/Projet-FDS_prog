@@ -318,7 +318,9 @@ BEGIN
             SELECT 'Ce participants a déjà donné une note pour cette activité';
         end ;
 
+    IF noteDeSeances < 5 THEN
     INSERT INTO Evaluations (id_adherent, id_seance, note) VALUES (idDeAdherent, idDeSeances, noteDeSeances);
+    end if ;
 end //
 DELIMITER ;
 
