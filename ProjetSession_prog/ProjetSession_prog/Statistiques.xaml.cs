@@ -29,7 +29,7 @@ namespace ProjetSession_prog
 
             if (Singleton.getInstance().IsSetConnection() == false || Singleton.getInstance().IsSetRole() != "admin")
             {
-                mainFrame.Navigate(typeof(Authentification));
+                mainFrame.Navigate(typeof(Affichage));
             }
         }
     }

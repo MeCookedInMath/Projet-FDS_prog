@@ -20,6 +20,7 @@ namespace ProjetSession_prog
 
         Boolean connection = false;
         string role = null;
+        string matricule_adherent = null;
 
         MySqlConnection con =  new MySqlConnection("Server=cours.cegep3r.info;Database=a2024_420335ri_eq6;Uid=2258419;Pwd=2258419;");
 
@@ -76,6 +77,12 @@ namespace ProjetSession_prog
         public string IsSetRole()
         {
             return role;
+        }
+
+
+        public string matricule_connection()
+        {
+            return matricule_adherent;
         }
 
 
@@ -141,19 +148,9 @@ namespace ProjetSession_prog
                 MySqlDataReader r = commande.ExecuteReader();
                 while (r.Read())
                 {
-                    //for (global::System.Int32 i = 0; i < listeActivites.Count; i++)
-                    //{
-                    //    if (listeActivites[i].Nom == r["nom"].ToString())
-                    //    {
-                    //        valide = false;
-                    //    }
-                    //}
+                    double note = r["note"] != DBNull.Value ? Convert.ToDouble(r["note"]) : 0;
 
-                    //if (valide)
-                    //{
-                    //    listeActivites.Add(new Activites(r["nom"].ToString(), Convert.ToInt32(r["id_categorie"]), r["type"].ToString(), Convert.ToDouble(r["cout_organisation"].ToString()), Convert.ToDouble(r["prix_vente"].ToString())));
-                    //}
-                    listeSeances.Add(new Seances(25, nomActivite, "15-02-2024", "12:00", 50, 3.5));
+                    listeSeances.Add(new Seances(Convert.ToInt32(r["id"]), nomActivite, r["date"].ToString(), r["heure"].ToString(), Convert.ToInt32(r["nbr_places"]), note ));
 
                 }
 
@@ -274,6 +271,7 @@ namespace ProjetSession_prog
                 {
                     role = "adherent";
                     connection = true;
+                    matricule_adherent = id;
 
                     con.Close();
                 }
@@ -287,6 +285,32 @@ namespace ProjetSession_prog
                 Debug.WriteLine(ex.Message);
             }
             con.Close();
+        }
+
+
+        public void creer_Inscriptions(int id_seance, string matricule)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("insertion_inscriptions");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("idDeAdherent", matricule);
+                commande.Parameters.AddWithValue("idDeSeances", id_seance);
+
+                con.Open();
+                commande.Prepare();
+                int i = commande.ExecuteNonQuery();
+
+                
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            con.Close();
+            
+
         }
 
 

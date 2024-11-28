@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -18,19 +18,11 @@ using Windows.Foundation.Collections;
 
 namespace ProjetSession_prog
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class AjoutActivites : Page
+    public sealed partial class Ajout_Adherents : UserControl
     {
-        public AjoutActivites()
+        public Ajout_Adherents()
         {
             this.InitializeComponent();
-
-            if (Singleton.getInstance().IsSetConnection() == false)
-            {
-                mainFrame.Navigate(typeof(Authentification));
-            }
         }
     }
 }

@@ -14,9 +14,9 @@
         
 
         <!--<Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+          
         </Grid.RowDefinitions>-->
 
         <Grid.ColumnDefinitions>
@@ -24,13 +24,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Page affichage"/>
+        <TextBlock x:Name="verif_inscriptions" Foreground="Green"/>
 
 
 
         <!--<StackPanel x:Name="stckpnl_adherents" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
 
-            <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Adherents" >
                         <StackPanel Width="200" Padding="15" Margin="50" Background="CornflowerBlue" CornerRadius="30">
@@ -57,8 +57,9 @@
         <!--</StackPanel>-->
 
         <!--<StackPanel x:Name="stckpnl_activites" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
+        
 
-            <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1">
+        <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" >
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Activites" >
                         <StackPanel Width="200" Padding="15" Margin="50" Background="DarkOliveGreen" CornerRadius="30">
@@ -78,7 +79,7 @@
                                             <ListView Header="Liste des séances" ItemsSource="{x:Bind Seances}" SelectionChanged="ListView_SelectionChanged">
                                                 
                                             </ListView>
-                                            <Button  Content="Yes, empty my cart" />
+                                            
                                         </StackPanel>
                                     </Flyout>
                                 </Button.Flyout>
@@ -102,6 +103,6 @@
 
         
         
-        <Frame x:Name="main_frame"/>
+        <Frame x:Name="mainFrame"/>
     </Grid>
 </Page>

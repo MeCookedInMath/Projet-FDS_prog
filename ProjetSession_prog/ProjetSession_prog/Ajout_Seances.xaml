@@ -1,0 +1,17 @@
+﻿<ContentDialog
+    x:Class="ProjetSession_prog.Ajout_Seances"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ProjetSession_prog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <StackPanel>
+        <TextBox x:Name="nom_activite" Margin="5"/>
+        <DatePicker Header="Date" x:Name="date_seance"  YearVisible="False"/>
+        <TimePicker x:Name="heure_seance"/>
+        <TextBox x:Name="nbr_places" Margin="5"/>
+    </StackPanel>
+</ContentDialog>

@@ -1,11 +1,10 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Org.BouncyCastle.Utilities.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,30 +18,37 @@ using Windows.Foundation.Collections;
 
 namespace ProjetSession_prog
 {
-    public sealed partial class controleUtilisateur : ContentDialog
+    public sealed partial class Ajout_Seances : ContentDialog
     {
-        public string Matricule { get; set; }
-        public string Mdp { get; set; }
 
-        
+        public string Nom_Activite { get; set; }
+        public string Date { get; set; }
 
-        public controleUtilisateur()
+        public string Heure { get; set; }
+
+        public int Nbr_Places { get; set; }
+
+        public Ajout_Seances()
         {
             this.InitializeComponent();
         }
 
+
+
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            Matricule = matricule.Text;
-            Mdp = pwd_user.Password;
+            Nom_Activite = nom_activite.Text;
+            Date = date_seance.Date.ToString("yyyy-mm-dd");
+            Heure = heure_seance.Time.ToString();
+            Nbr_Places = Convert.ToInt32(nbr_places.Text);
 
-            
 
 
-            if (string.IsNullOrEmpty(Matricule) || string.IsNullOrEmpty(Mdp))
+            int nombre;
+            if (string.IsNullOrEmpty(Nom_Activite) || string.IsNullOrEmpty(Date) || string.IsNullOrEmpty(Heure) || Int32.TryParse(Nbr_Places.ToString(),out nombre) == false )
             {
                 args.Cancel = true;
-                Title = "Tous les champs doivent �tre remplis";
+                Title = "Tous les champs doivent être remplis ou avoir des valeurs au bon format";
             }
         }
 
