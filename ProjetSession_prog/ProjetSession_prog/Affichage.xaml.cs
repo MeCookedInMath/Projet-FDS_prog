@@ -25,7 +25,9 @@ namespace ProjetSession_prog
     {
         public Affichage()
         {
-            this.InitializeComponent();  
+            this.InitializeComponent();
+
+
             liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
             liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
 
