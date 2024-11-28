@@ -26,12 +26,56 @@ namespace ProjetSession_prog
         public Authentification()
         {
             this.InitializeComponent();
+            
         }
 
-        private void test_connexion_Click(object sender, RoutedEventArgs e)
+
+        
+
+        private void deconnect_btn_Click(object sender, RoutedEventArgs e)
         {
-            Singleton.getInstance().SetConnectionTrue();
+            Singleton.getInstance().SetConnectionFalse(); 
+        }
+
+
+        private void connexion_admin_Click(object sender, RoutedEventArgs e)
+        {
+
             
+            string matricule_admin = txtbx_matricule_admin.Text.Trim();
+            int id = Convert.ToInt32(matricule_admin);
+            string mdp = txtbx_mdp_admin.Text;
+
+            Singleton.getInstance().getConnectionAdmin(id, mdp);
+
+            if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+            {
+                validation_connexion1.Text = "Vous êtes bien connecté en tant qu'administrateur.";
+            }
+            else {
+                
+                validation_connexion1.Text = "La connexion n'a pas fonctionné.";
+            }
+            
+        }
+
+        private void connexion_adherent_Click(object sender, RoutedEventArgs e)
+        {
+            string matricule_adherent = txtbx_matricule_adherent.Text.Trim();
+            
+            string mdp = txtbx_mdp_adherent.Text;
+
+            Singleton.getInstance().getConnectionAdherent(matricule_adherent, mdp);
+
+            if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "adherent")
+            {
+                validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
+            }
+            else
+            {
+                validation_connexion2.Text = "La connexion n'a pas fonctionné.";
+            }
+
         }
     }
 }

@@ -10,10 +10,49 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="Page Authentification"/>
 
-        <Button Content="Connexion" x:Name="test_connexion" Click="test_connexion_Click"/>
+
+        <Grid.RowDefinitions>
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock x:Name="titre" Text="Page Authentification" Grid.Row="0"/>
+         <Button x:Name="deconnect_btn"  Click="deconnect_btn_Click">Déconnecter</Button>
 
         
+        <StackPanel x:Name="stckpnl_connexion_admin" Grid.Row="1"  Grid.Column="0">
+
+            <TextBox Header="Matricule" x:Name="txtbx_matricule_admin" />
+
+            <TextBox Header="Mot de passe"  x:Name="txtbx_mdp_admin"/>
+
+            <Button Content="Connexion" x:Name="connexion_admin" Click="connexion_admin_Click" Grid.Column="1"/>
+
+            <TextBlock x:Name="validation_connexion1" Foreground="Green"/>
+        </StackPanel>
+
+        <StackPanel x:Name="stckpnl_connexion_adherents" Grid.Row="1"  Grid.Column="1">
+
+            <TextBox Header="Matricule" x:Name="txtbx_matricule_adherent" />
+
+            <TextBox Header="Mot de passe"  x:Name="txtbx_mdp_adherent"/>
+
+            <Button Content="Connexion" x:Name="connexion_adherent" Click="connexion_adherent_Click" Grid.Column="1"/>
+
+            <TextBlock x:Name="validation_connexion2" Foreground="Green"/>
+        </StackPanel>
+
+
+
+
+
+
     </Grid>
 </Page>

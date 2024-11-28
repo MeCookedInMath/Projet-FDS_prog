@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,7 @@ namespace ProjetSession_prog
         static Singleton instance = null;
 
         Boolean connection = false;
+        string role = null;
 
         MySqlConnection con =  new MySqlConnection("Server=cours.cegep3r.info;Database=a2024_420335ri_eq6;Uid=2258419;Pwd=2258419;");
 
@@ -68,6 +70,11 @@ namespace ProjetSession_prog
 
         public void SetConnectionFalse() { 
             connection = false;
+        }
+
+        public string IsSetRole()
+        {
+            return role;
         }
 
 
@@ -205,6 +212,86 @@ namespace ProjetSession_prog
 
             return listeAdherents;
         }
+
+        public void getConnectionAdmin(int id, string mdp)
+        {
+            try
+            {
+                // Utilisation d'une requête paramétrée pour éviter les injections SQL
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "SELECT COUNT(*) FROM administrateur WHERE id = @id AND mdp = @mdp";
+                commande.Parameters.AddWithValue("@id", id);
+                commande.Parameters.AddWithValue("@mdp", mdp);  // Note : le mot de passe est envoyé en clair, ce qui est dangereux.
+
+                // Ouverture de la connexion
+                con.Open();
+
+                // Exécution de la requête et récupération du résultat
+                var resultat = commande.ExecuteScalar();
+
+                // Vérification si l'utilisateur existe dans la base de données
+                if (resultat != null && Convert.ToInt32(resultat) == 1)
+                {
+                    role = "admin";
+                    connection = true;
+
+                    con.Close() ;
+                }
+                else
+                {
+                    Debug.WriteLine("Identifiants invalides ou utilisateur inexistant.");
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+           con.Close();
+        }
+
+
+        public void getConnectionAdherent(string id, string mdp)
+        {
+            try
+            {
+                // Utilisation d'une requête paramétrée pour éviter les injections SQL
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "SELECT COUNT(*) FROM adherents WHERE no_identification = @no_identification AND prenom = @prenom";
+                commande.Parameters.AddWithValue("@no_identification", id);
+                commande.Parameters.AddWithValue("@prenom", mdp);  // Note : le mot de passe est envoyé en clair, ce qui est dangereux.
+
+                // Ouverture de la connexion
+                con.Open();
+
+                // Exécution de la requête et récupération du résultat
+                var resultat = commande.ExecuteScalar();
+
+                // Vérification si l'utilisateur existe dans la base de données
+                if (resultat != null && Convert.ToInt32(resultat) == 1)
+                {
+                    role = "adherent";
+                    connection = true;
+
+                    con.Close();
+                }
+                else
+                {
+                    Debug.WriteLine("Identifiants invalides ou utilisateur inexistant.");
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            con.Close();
+        }
+
+
+
+
+
 
 
 

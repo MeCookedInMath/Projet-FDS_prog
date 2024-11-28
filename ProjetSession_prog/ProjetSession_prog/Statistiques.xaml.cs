@@ -27,7 +27,7 @@ namespace ProjetSession_prog
         {
             this.InitializeComponent();
 
-            if (Singleton.getInstance().IsSetConnection() == false)
+            if (Singleton.getInstance().IsSetConnection() == false || Singleton.getInstance().IsSetRole() != "admin")
             {
                 mainFrame.Navigate(typeof(Authentification));
             }
