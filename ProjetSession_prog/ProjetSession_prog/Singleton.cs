@@ -70,6 +70,7 @@ namespace ProjetSession_prog
 
         public void SetConnectionFalse() { 
             connection = false;
+            role = null;
         }
 
         public string IsSetRole()

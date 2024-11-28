@@ -34,48 +34,88 @@ namespace ProjetSession_prog
 
         private void deconnect_btn_Click(object sender, RoutedEventArgs e)
         {
-            Singleton.getInstance().SetConnectionFalse(); 
+            Singleton.getInstance().SetConnectionFalse();
+
+            validation_connexion1.Text = null;
+            validation_connexion2.Text = null;
         }
 
-
-        private void connexion_admin_Click(object sender, RoutedEventArgs e)
+        
+        
+        
+        private async void connexion_admin_Click(object sender, RoutedEventArgs e)
         {
+            controleUtilisateur dialog = new controleUtilisateur();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Authentification";
+            dialog.PrimaryButtonText = "Se connecter";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
 
-            
-            string matricule_admin = txtbx_matricule_admin.Text.Trim();
-            int id = Convert.ToInt32(matricule_admin);
-            string mdp = txtbx_mdp_admin.Text;
+            ContentDialogResult resultat = await dialog.ShowAsync();
 
-            Singleton.getInstance().getConnectionAdmin(id, mdp);
-
-            if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+            if (resultat == ContentDialogResult.Primary)
             {
-                validation_connexion1.Text = "Vous êtes bien connecté en tant qu'administrateur.";
+                int matricule = Convert.ToInt32(dialog.Matricule);
+                string mdp = dialog.Mdp;
+
+
+                Singleton.getInstance().getConnectionAdmin(matricule, mdp);
+
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    validation_connexion1.Text = "Vous êtes bien connecté en tant qu'administrateur.";
+                }
+                else
+                {
+
+                    validation_connexion1.Text = "La connexion n'a pas fonctionné.";
+                }
             }
-            else {
-                
-                validation_connexion1.Text = "La connexion n'a pas fonctionné.";
-            }
-            
+
+
+
         }
 
-        private void connexion_adherent_Click(object sender, RoutedEventArgs e)
+
+        private async void connexion_adherent_Click(object sender, RoutedEventArgs e)
         {
-            string matricule_adherent = txtbx_matricule_adherent.Text.Trim();
-            
-            string mdp = txtbx_mdp_adherent.Text;
+            controleUtilisateur dialog = new controleUtilisateur();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Authentification";
+            dialog.PrimaryButtonText = "Se connecter";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
 
-            Singleton.getInstance().getConnectionAdherent(matricule_adherent, mdp);
+            ContentDialogResult resultat = await dialog.ShowAsync();
 
-            if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "adherent")
+            if (resultat == ContentDialogResult.Primary)
             {
-                validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
+                string matricule = dialog.Matricule;
+                string mdp = dialog.Mdp;
+
+
+                Singleton.getInstance().getConnectionAdherent(matricule, mdp);
+
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "adherent")
+                {
+                    validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
+                }
+                else
+                {
+
+                    validation_connexion2.Text = "La connexion n'a pas fonctionné.";
+                }
             }
-            else
-            {
-                validation_connexion2.Text = "La connexion n'a pas fonctionné.";
-            }
+
+
 
         }
+
+
+
+      
+
+        
     }
 }
