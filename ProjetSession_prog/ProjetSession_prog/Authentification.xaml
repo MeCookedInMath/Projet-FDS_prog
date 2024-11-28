@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ProjetSession_prog.Authentification"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ProjetSession_prog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+
+        <Grid.RowDefinitions>
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock x:Name="titre" Text="Page Authentification" Grid.Row="0"/>
+         <Button x:Name="deconnect_btn"  Click="deconnect_btn_Click">Déconnecter</Button>
+
+
+        <StackPanel x:Name="stckpnl_connexion_admin" Grid.Row="1"  Grid.Column="0">
+            
+            <Button Content="Connexion" x:Name="connexion_admin" Click="connexion_admin_Click" Grid.Column="1"/>
+
+            <TextBlock x:Name="validation_connexion1" Foreground="Green"/>
+        </StackPanel>
+
+        <StackPanel x:Name="stckpnl_connexion_adherents" Grid.Row="1"  Grid.Column="1">
+
+            <Button Content="Connexion" x:Name="connexion_adherent" Click="connexion_adherent_Click" Grid.Column="1"/>
+
+            <TextBlock x:Name="validation_connexion2" Foreground="Green"/>
+        </StackPanel>
+
+
+
+
+
+
+    </Grid>
+</Page>
