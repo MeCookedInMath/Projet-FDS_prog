@@ -38,7 +38,7 @@ namespace ProjetSession_prog
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             Nom_Activite = nom_activite.Text;
-            Date = date_seance.Date.ToString("yyyy-mm-dd");
+            Date = date_seance.Date.ToString("yyyy-MM-dd");
             Heure = heure_seance.Time.ToString();
             Nbr_Places = Convert.ToInt32(nbr_places.Text);
 

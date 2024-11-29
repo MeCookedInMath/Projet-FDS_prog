@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml;
+﻿ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -36,11 +36,15 @@ namespace ProjetSession_prog
         {
             Nom = nom_activite.Text;
             Id_Categorie = Convert.ToInt32(id_categorie.Text);
+            Type = type.Text;
+            Cout_Organisation = Convert.ToDouble(cout_organisation.Text);
+            Prix_Vente = Convert.ToDouble(prix_vente.Text);
 
 
+            int nombre;
+            double nombre2;
 
-
-            if ( string.IsNullOrEmpty(Nom))
+            if ( string.IsNullOrEmpty(Nom) || Int32.TryParse(Id_Categorie.ToString(), out nombre) == false || string.IsNullOrEmpty(Type) || double.TryParse(Cout_Organisation.ToString(), out nombre2) == false || double.TryParse(Prix_Vente.ToString(), out nombre2) == false )
             {
                 args.Cancel = true;
                 Title = "Tous les champs doivent être remplis";

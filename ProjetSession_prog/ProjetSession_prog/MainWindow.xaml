@@ -7,16 +7,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <NavigationView PaneDisplayMode="Left" PaneTitle="Site de gestion de produits" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
+    <NavigationView PaneDisplayMode="Left" PaneTitle="Site du centre de loisirs" Foreground="Gold" FontSize="20" FontWeight="Bold" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
-            <NavigationViewItemHeader Content="Équipes"/>
+            <NavigationViewItemHeader Content="Gestion"/>
             <NavigationViewItem Content="Authentification" x:Name="iAuthentification" Icon="People" Background="IndianRed" Tag="Page1"/>
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Statistiques" x:Name="iStatistiques" Icon="Add" Background="DarkOliveGreen" Tag="Page2"/>
             <NavigationViewItemSeparator />
-            <NavigationViewItem Content="Affichage" x:Name="iAffichage" Icon="People" Background="IndianRed" Tag="Page1"/>
+            <NavigationViewItem Content="Affichage" x:Name="iAffichage" Icon="People" Background="IndianRed" Tag="Page3"/>
             <NavigationViewItemSeparator />
-            
+            <NavigationViewItem Content="Ajouter" x:Name="iAjouter" Icon="People" Background="PaleGoldenrod" Tag="Page4"/>
+            <NavigationViewItemSeparator />
+
 
 
         </NavigationView.MenuItems>

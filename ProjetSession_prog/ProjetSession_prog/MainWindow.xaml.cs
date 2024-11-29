@@ -27,7 +27,7 @@ namespace ProjetSession_prog
         {
             this.InitializeComponent();
             
-            mainFrame.Navigate(typeof(Authentification));
+            mainFrame.Navigate(typeof(Affichage));
         }
 
 
@@ -46,6 +46,9 @@ namespace ProjetSession_prog
                     break;
                 case "iAffichage":
                     mainFrame.Navigate(typeof(Affichage));
+                    break;
+                case "iAjouter":
+                    mainFrame.Navigate(typeof(PageAjouter));
                     break;
 
 

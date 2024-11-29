@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ProjetSession_prog.PageAjouter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ProjetSession_prog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+
+        <StackPanel x:Name="stckpnl_ajout_activites" Grid.Row="0"  Grid.Column="0">
+
+            <Button Content="Activités" x:Name="Btn_AjoutActivites" Click="Btn_AjoutActivites_Click" />
+
+            <TextBlock x:Name="validation_click" Foreground="Green"/>
+        </StackPanel>
+
+        <StackPanel x:Name="stckpnl_ajout_adherents" Grid.Row="0"  Grid.Column="1">
+
+            <Button Content="Adhérents" x:Name="Btn_AjoutAdherents" Click="Btn_AjoutAdherents_Click" />
+
+            <TextBlock x:Name="validation_click1" Foreground="Green"/>
+        </StackPanel>
+
+        <StackPanel x:Name="stckpnl_ajout_seances" Grid.Row="0"  Grid.Column="2">
+
+            <Button Content="Séances" x:Name="Btn_AjoutSeances" Click="Btn_AjoutSeances_Click" />
+
+            <TextBlock x:Name="validation_click2" Foreground="Green"/>
+        </StackPanel>
+    </Grid>
+</Page>

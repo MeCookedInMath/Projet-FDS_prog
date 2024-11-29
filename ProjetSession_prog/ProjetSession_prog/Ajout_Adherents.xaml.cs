@@ -18,11 +18,35 @@ using Windows.Foundation.Collections;
 
 namespace ProjetSession_prog
 {
-    public sealed partial class Ajout_Adherents : UserControl
+    public sealed partial class Ajout_Adherents : ContentDialog
     {
+
+        public string Nom { get; set; }
+        public string Prenom { get; set; }
+        public string Adresse { get; set; }
+        public string Date_Naissance { get; set; }
         public Ajout_Adherents()
         {
             this.InitializeComponent();
         }
+
+
+        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            Nom = nom.Text;
+            Prenom = prenom.Text;
+            Adresse = adresse.Text;
+            Date_Naissance = date_naissance.Date.ToString("yyyy-MM-dd");
+
+
+
+            if (string.IsNullOrEmpty(Nom) || string.IsNullOrEmpty(Prenom) || string.IsNullOrEmpty(Adresse) || string.IsNullOrEmpty(Date_Naissance))
+            {
+                args.Cancel = true;
+                Title = "Tous les champs doivent être remplis";
+            }
+        }
+
+
     }
 }

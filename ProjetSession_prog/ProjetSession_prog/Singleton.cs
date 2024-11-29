@@ -313,6 +313,62 @@ namespace ProjetSession_prog
 
         }
 
+        public void creer_Activites(string nom_activite, int id_categorie, string type, double cout_organisation, double prix_vente)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("insertion_activites");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("activites_nom", nom_activite);
+                commande.Parameters.AddWithValue("activites_categorieId", id_categorie);
+                commande.Parameters.AddWithValue("activites_type", type);
+                commande.Parameters.AddWithValue("activites_coutOrganisation", cout_organisation);
+                commande.Parameters.AddWithValue("activites_prixVente", prix_vente);
+
+                con.Open();
+                commande.Prepare();
+                int i = commande.ExecuteNonQuery();
+
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            con.Close();
+
+
+        }
+
+
+        public void creer_Adherents(string nom, string prenom, string adresse, string date_naissance)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("insertion_adherents");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("adherents_nom", nom);
+                commande.Parameters.AddWithValue("adherents_prenom", prenom);
+                commande.Parameters.AddWithValue("adherents_adresse", adresse);
+                commande.Parameters.AddWithValue("adherents_dateNaissance", date_naissance);
+              
+
+                con.Open();
+                commande.Prepare();
+                int i = commande.ExecuteNonQuery();
+
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            con.Close();
+
+
+        }
 
 
 
