@@ -29,14 +29,14 @@
 
         <StackPanel x:Name="stckpnl_connexion_admin" Grid.Row="1"  Grid.Column="0">
             
-            <Button Content="Connexion" x:Name="connexion_admin" Click="connexion_admin_Click" Grid.Column="1"/>
+            <Button Content="Connexion Admin" x:Name="connexion_admin" Click="connexion_admin_Click" Grid.Column="1"/>
 
             <TextBlock x:Name="validation_connexion1" Foreground="Green"/>
         </StackPanel>
 
         <StackPanel x:Name="stckpnl_connexion_adherents" Grid.Row="1"  Grid.Column="1">
 
-            <Button Content="Connexion" x:Name="connexion_adherent" Click="connexion_adherent_Click" Grid.Column="1"/>
+            <Button Content="Connexion Adherent" x:Name="connexion_adherent" Click="connexion_adherent_Click" Grid.Column="1"/>
 
             <TextBlock x:Name="validation_connexion2" Foreground="Green"/>
         </StackPanel>

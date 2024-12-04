@@ -100,7 +100,36 @@ namespace ProjetSession_prog
 
         private async void Btn_AjoutSeances_Click(object sender, RoutedEventArgs e)
         {
+            Ajout_Seances dialog = new Ajout_Seances();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Ajouter une séance";
+            dialog.PrimaryButtonText = "Enregistrer";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
 
+            ContentDialogResult resultat = await dialog.ShowAsync();
+
+            if (resultat == ContentDialogResult.Primary)
+            {
+                string nomActivite = dialog.Nom_Activite;
+                string heure = dialog.Heure;
+                string date = dialog.Date;
+                int nbr_places = dialog.Nbr_Places;
+
+                try
+                {
+                    Singleton.getInstance().creer_Seances(nomActivite, date, heure, nbr_places);
+                    validation_click2.Text = "L'ajout a bien fonctionné";
+                }
+                catch (MySqlException ex)
+                {
+                    Debug.WriteLine("L'ajout n'a pas fonctionné" + ex.Message);
+                    validation_click2.Text = "L'ajout n'a pas fonctionné";
+                }
+
+
+
+            }
         }
     }
 }

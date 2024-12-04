@@ -371,6 +371,56 @@ namespace ProjetSession_prog
         }
 
 
+        public void creer_Seances(string nom_activite, string date, string heure, int nbr_places)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("insertion_seances");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("seance_nomActivite", nom_activite);
+                commande.Parameters.AddWithValue("seance_date", date);
+                commande.Parameters.AddWithValue("seance_heure", heure);
+                commande.Parameters.AddWithValue("seance_nbrPlace", nbr_places);
+
+
+                con.Open();
+                commande.Prepare();
+                int i = commande.ExecuteNonQuery();
+
+
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            con.Close();
+
+
+        }
+
+        public void supprimerActivites(string nomActivite)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"delete from activites where nom = '{nomActivite}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
 
 
 

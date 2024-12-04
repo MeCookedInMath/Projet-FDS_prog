@@ -5,8 +5,10 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -34,10 +36,6 @@ namespace ProjetSession_prog
 
         }
 
-        private void supprimer_click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         
 
@@ -71,6 +69,43 @@ namespace ProjetSession_prog
             }
 
             
+        }
+
+        private void supprimerAdherents_click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void supprimerActivites_click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Singleton.getInstance().IsSetConnection()==true && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    Button button = sender as Button;
+
+                    Activites activite = button.DataContext as Activites;
+
+                    liste_activites.SelectedItem = activite;
+
+                    var collectionProduits = liste_activites.ItemsSource as ObservableCollection<Activites>;
+
+                    collectionProduits.Remove(activite);
+
+                    Singleton.getInstance().supprimerActivites(activite.Nom);
+                }
+                else
+                {
+                    verif_inscriptions.Text = "Vous ne pouvez supprimer une activité si vous n'êtes pas un administrateur";
+                }
+
+                
+
+            }
+            catch (Exception error)
+            {
+                Debug.WriteLine(error.Message);
+            }
         }
     }
 }
