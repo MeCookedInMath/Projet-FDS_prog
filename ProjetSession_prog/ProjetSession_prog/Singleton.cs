@@ -421,6 +421,30 @@ namespace ProjetSession_prog
         }
 
 
+        public void supprimerAdherents(string noIdentification)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"delete from adherents where no_identification = '{noIdentification}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
+
+
 
 
 

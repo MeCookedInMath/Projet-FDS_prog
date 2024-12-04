@@ -48,7 +48,11 @@
                                 <Button x:Name="supprimerAdherents_click" Click="supprimerAdherents_click" >
                                     <SymbolIcon Symbol="Delete" />
                                 </Button>
-                            </StackPanel>
+
+                                <Button x:Name="modifierAdherents_click" Click="modifierAdherents_click" >
+                                    <SymbolIcon Symbol="Repair" />
+                                </Button>
+                        </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
@@ -84,12 +88,15 @@
                                     </Flyout>
                                 </Button.Flyout>
 
-                                <SymbolIcon Symbol="Send" />
+                                <SymbolIcon Symbol="Add" />
 
                             </Button>
 
                             <Button x:Name="supprimerActivites_click" Click="supprimerActivites_click" >
                                 <SymbolIcon Symbol="Delete" />
+                            </Button>
+                            <Button x:Name="modifierActivites_click" Click="modifierActivites_click" >
+                                <SymbolIcon Symbol="Repair" />
                             </Button>
 
                         </StackPanel>

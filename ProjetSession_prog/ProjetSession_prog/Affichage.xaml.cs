@@ -24,7 +24,7 @@ namespace ProjetSession_prog
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Affichage : Page
+    public sealed partial class Affichage : Page 
     {
         public Affichage()
         {
@@ -73,7 +73,34 @@ namespace ProjetSession_prog
 
         private void supprimerAdherents_click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    Button button = sender as Button;
+
+                    Adherents adherent = button.DataContext as Adherents;
+
+                    liste_adherents.SelectedItem = adherent;
+
+                    var collectionProduits = liste_adherents.ItemsSource as ObservableCollection<Adherents>;
+
+                    collectionProduits.Remove(adherent);
+
+                    Singleton.getInstance().supprimerAdherents(adherent.No_Identification);
+                }
+                else
+                {
+                    verif_inscriptions.Text = "Vous ne pouvez supprimer un adhérent si vous n'êtes pas un administrateur";
+                }
+
+
+
+            }
+            catch (Exception error)
+            {
+                Debug.WriteLine(error.Message);
+            }
         }
 
         private void supprimerActivites_click(object sender, RoutedEventArgs e)
@@ -105,6 +132,69 @@ namespace ProjetSession_prog
             catch (Exception error)
             {
                 Debug.WriteLine(error.Message);
+            }
+        }
+
+        private async void modifierAdherents_click(object sender, RoutedEventArgs e)
+        {
+            Button modifier = sender as Button;
+            Adherents adherent = modifier.DataContext as Adherents;
+
+            ModifierAdherents dialog = new ModifierAdherents(adherent.Nom, adherent.Prenom, adherent.Adresse);
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Modifier l'adhérent";
+            dialog.PrimaryButtonText = "Modifier";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
+
+            ContentDialogResult resultat = await dialog.ShowAsync();
+
+
+            if (resultat == ContentDialogResult.Primary)
+            {
+                string nom = dialog.Nom;
+                
+                string prenom = dialog.Prenom;
+
+                string adresse = dialog.Adresse;
+
+                
+
+
+
+            }
+
+        }
+
+        private async void modifierActivites_click(object sender, RoutedEventArgs e)
+        {
+            Button modifier = sender as Button;
+            Activites activites = modifier.DataContext as Activites;
+
+            ModifierActivites dialog = new ModifierActivites(activites.Id_Categorie, activites.Type, activites.Cout_organisation, activites.Prix_vente);
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Modifier l'adhérent";
+            dialog.PrimaryButtonText = "Modifier";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
+
+            ContentDialogResult resultat = await dialog.ShowAsync();
+
+
+            if (resultat == ContentDialogResult.Primary)
+            {
+                int id_categorie = dialog.Id_Categorie;
+
+                string type = dialog.Type;
+
+                double cout_organisation = dialog.Cout_Organisation;
+
+                double prix_vente = dialog.Prix_Vente;
+
+
+
+
+
             }
         }
     }

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <NavigationView PaneDisplayMode="Left" PaneTitle="Site du centre de loisirs" Foreground="Gold" FontSize="20" FontWeight="Bold" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
             <NavigationViewItemHeader Content="Gestion"/>
