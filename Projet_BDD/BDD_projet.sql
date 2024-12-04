@@ -187,6 +187,20 @@ DELIMITER ;
 
 
 
+DROP TRIGGER if exists drop_adherents;
+DELIMITER //
+CREATE TRIGGER drop_adherents
+    BEFORE DELETE ON Adherents
+    FOR EACH ROW
+    BEGIN
+        DELETE FROM Evaluations WHERE Evaluations.id_adherent = OLD.no_identification;
+
+        DELETE FROM Inscriptions WHERE Inscriptions.id_adherent = OLD.no_identification;
+    end //
+DELIMITER ;
+
+
+
 DROP TRIGGER if exists drop_seances;
 DELIMITER //
 CREATE TRIGGER drop_seances
