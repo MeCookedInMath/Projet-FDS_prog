@@ -169,6 +169,82 @@ CREATE TRIGGER calculer_age
     end //
 DELIMITER ;
 
+DROP TRIGGER if exists modifier_age;
+DELIMITER //
+CREATE TRIGGER modifier_age
+    BEFORE UPDATE ON Adherents
+    FOR EACH ROW
+    BEGIN
+
+        DECLARE erreur_nom CONDITION FOR SQLSTATE '73000';
+        DECLARE erreur_prenom CONDITION FOR SQLSTATE '74000';
+        DECLARE erreur_adresse CONDITION FOR SQLSTATE '75000';
+        DECLARE erreur_dateNaissance CONDITION FOR SQLSTATE '76000';
+
+
+        DECLARE ageCalcule INT;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '73000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La valeur entrée pour le nom du participant ne peut pas être numérique ou contenir de chiffres.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '74000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La valeur entrée pour le prénom du participant ne peut pas être numérique ou contenir de chiffres.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '75000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'L`adresse du participant n`est pas valide car elle n`a pas été rentré au bon format.';
+            end ;
+
+        DECLARE EXIT HANDLER FOR SQLSTATE '76000'
+            BEGIN
+                RESIGNAL SET MESSAGE_TEXT = 'La date de naissance n`est pas valide car elle n`a pas été rentrée au bon format.';
+            end ;
+
+
+        IF NEW.nom REGEXP '[0-9]' THEN
+            SIGNAL erreur_nom;
+        END IF;
+
+        -- Vérifier si le prénom contient des chiffres
+        IF NEW.prenom REGEXP '[0-9]' THEN
+            SIGNAL erreur_prenom;
+        END IF ;
+
+        IF NEW.adresse REGEXP '^[0-9]+[ ]+[A-Za-zéèàôêù\s\'-]+$' THEN
+            SIGNAL erreur_adresse;
+        END IF ;
+
+        IF DATE(NEW.date_naissance) is null THEN
+            SIGNAL erreur_dateNaissance;
+        END IF ;
+
+        IF (SELECT COUNT(*) FROM Adherents WHERE nom = NEW.nom AND prenom = NEW.prenom) > 0 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un participant ne peut pas avoir deux numéros d`identification.';
+        end if ;
+
+
+        SET ageCalcule = FLOOR((DATEDIFF(CURRENT_DATE(), NEW.date_naissance ))/365);
+
+        IF ageCalcule >= 18 THEN
+            SET NEW.age = ageCalcule;
+
+
+        ELSE SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Un Participant ne peut pas être ajouté. Son age doit être de plus de 18.';
+
+        end if ;
+
+    end //
+DELIMITER ;
+
+
+
+
 
 DROP TRIGGER if exists creer_numeroIdentification;
 DELIMITER //
