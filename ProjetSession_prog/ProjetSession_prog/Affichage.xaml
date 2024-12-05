@@ -13,24 +13,25 @@
 
         
 
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
           
-        </Grid.RowDefinitions>-->
+        </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <TextBlock x:Name="verif_inscriptions" Foreground="Green"/>
+        
+        
+        
 
 
 
         <!--<StackPanel x:Name="stckpnl_adherents" Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
 
-            <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+            <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="1">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Adherents" >
                         <StackPanel Width="200" Padding="15" Margin="30" Background="CornflowerBlue" CornerRadius="30">
@@ -44,8 +45,23 @@
                                 <TextBlock Text="{x:Bind Date_Naissance}" Margin="5,5,5,10"/>
                                 <TextBlock Text="{x:Bind Age}" Margin="5,5,5,10"/>
 
+                            <Button x:Name="afficher_seances" Margin="5">
+                                <Button.Flyout>
+                                    <Flyout>
 
-                                <Button x:Name="supprimerAdherents_click" Click="supprimerAdherents_click" >
+                                        <ListView Header="Liste des séances" x:Name="listeSeancesParAdhérent"
+                                          
+                                          SelectionChanged="listeSeancesParAdhérent_SelectionChanged" 
+                                         />     
+
+                                    </Flyout>
+                                </Button.Flyout>
+                                <TextBlock Text="Voir les inscriptions"/>
+
+                            </Button>
+
+
+                            <Button x:Name="supprimerAdherents_click" Click="supprimerAdherents_click" >
                                     <SymbolIcon Symbol="Delete" />
                                 </Button>
 
@@ -63,7 +79,7 @@
         <!--<StackPanel x:Name="stckpnl_activites" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">-->
         
 
-        <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" >
+        <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Activites" >
                         <StackPanel Width="200" Padding="15" Margin="30" Background="DarkOliveGreen" CornerRadius="30">

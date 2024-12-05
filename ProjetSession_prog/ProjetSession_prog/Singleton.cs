@@ -16,6 +16,7 @@ namespace ProjetSession_prog
         ObservableCollection<Activites> listeActivites;
         ObservableCollection<Adherents> listeAdherents;
         ObservableCollection<Seances> listeSeances;
+        ObservableCollection<Seances> listeSeancesParAdherent;
         static Singleton instance = null;
 
         Boolean connection = false;
@@ -209,6 +210,43 @@ namespace ProjetSession_prog
             }
 
             return listeAdherents;
+        }
+
+
+
+        public ObservableCollection<Seances> getListeSeancesPourAdhérents(string noIdentification)
+        {
+            
+            try
+            {
+
+
+                Boolean valide = true;
+
+
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"Select id, nom_activite, date, heure, nbr_places, note from seances inner join inscriptions i on seances.id = i.id_seance where i.id_adherent = '{noIdentification}'";
+                con.Open();
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    double note = r["note"] != DBNull.Value ? Convert.ToDouble(r["note"]) : 0;
+
+                    listeSeancesParAdherent.Add(new Seances(Convert.ToInt32(r["id"]), r["nom_activite"].ToString(), r["date"].ToString(), r["heure"].ToString(), Convert.ToInt32(r["nbr_places"]), note));
+
+                }
+
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+
+            return listeSeancesParAdherent;
         }
 
         public void getConnectionAdmin(int id, string mdp)

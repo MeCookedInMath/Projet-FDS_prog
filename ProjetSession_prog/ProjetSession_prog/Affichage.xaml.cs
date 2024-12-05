@@ -29,7 +29,7 @@ namespace ProjetSession_prog
         public Affichage()
         {
             this.InitializeComponent();
-            verif_inscriptions.Text = null;
+            
 
             liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
             liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
@@ -42,7 +42,7 @@ namespace ProjetSession_prog
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            verif_inscriptions.Text = "allo";
+           
 
             try
             {
@@ -54,11 +54,11 @@ namespace ProjetSession_prog
 
                     Singleton.getInstance().creer_Inscriptions(seances.Id, Singleton.getInstance().matricule_connection());
 
-                    verif_inscriptions.Text = $"Vous êtes maintenant inscrits à cette activité.";
+                    
                 }
                 else
                 {
-                    verif_inscriptions.Text = $"Vous ne pouvez vous inscrire à cette activité si vous n'êtes pas connecté en tant qu'adhérent";
+                    
                 }
                 
                
@@ -91,7 +91,7 @@ namespace ProjetSession_prog
                 }
                 else
                 {
-                    verif_inscriptions.Text = "Vous ne pouvez supprimer un adhérent si vous n'êtes pas un administrateur";
+                    
                 }
 
 
@@ -123,7 +123,7 @@ namespace ProjetSession_prog
                 }
                 else
                 {
-                    verif_inscriptions.Text = "Vous ne pouvez supprimer une activité si vous n'êtes pas un administrateur";
+                   
                 }
 
                 
@@ -171,9 +171,9 @@ namespace ProjetSession_prog
                     }
                     catch(MySqlException ex) { 
                         Debug.WriteLine(ex.Message);
-                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                        
                     }
-                    verif_inscriptions.Text = "La modification a bien fonctionné";
+                    
 
                     liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
                 }
@@ -218,9 +218,9 @@ namespace ProjetSession_prog
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                        
                     }
-                    verif_inscriptions.Text = "La modification a bien fonctionné";
+                    
                     liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
                 }
             }
@@ -264,9 +264,9 @@ namespace ProjetSession_prog
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                        
                     }
-                    verif_inscriptions.Text = "La modification a bien fonctionné";
+                    
                     liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
                 }
             }
@@ -279,17 +279,31 @@ namespace ProjetSession_prog
                     try
                     {
                         Singleton.getInstance().supprimerSeances(seance.Id);
+
+                        ObservableCollection<Seances> collectionSeances = modifier.ItemsSource as ObservableCollection<Seances>;
+
+                        if (collectionSeances != null)
+                        {
+                            collectionSeances.Remove(seance);
+                        }
+
+                        
                     }
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        verif_inscriptions.Text = "La séance n'a pas pu être supprimée";
+                        
                     }
-                    verif_inscriptions.Text = "La séance a bien été supprimée";
-                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                    
+                    
                 }
             }
 
+        }
+
+        private void listeSeancesParAdhérent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //compléter cette partie
         }
     }
 }
