@@ -152,15 +152,31 @@ namespace ProjetSession_prog
 
             if (resultat == ContentDialogResult.Primary)
             {
+                string noIdentification = adherent.No_Identification;
+
                 string nom = dialog.Nom;
                 
                 string prenom = dialog.Prenom;
 
                 string adresse = dialog.Adresse;
 
-                
+                string dateNaissance = dialog.Date_Naissance;
 
 
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    try
+                    {
+                        Singleton.getInstance().modifierAdherents(noIdentification, nom, prenom, adresse, dateNaissance);
+                    }
+                    catch(MySqlException ex) { 
+                        Debug.WriteLine(ex.Message);
+                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                    }
+                    verif_inscriptions.Text = "La modification a bien fonctionné";
+
+                    liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
+                }
 
             }
 
@@ -173,7 +189,7 @@ namespace ProjetSession_prog
 
             ModifierActivites dialog = new ModifierActivites(activites.Id_Categorie, activites.Type, activites.Cout_organisation, activites.Prix_vente);
             dialog.XamlRoot = this.XamlRoot;
-            dialog.Title = "Modifier l'adhérent";
+            dialog.Title = "Modifier l'activité";
             dialog.PrimaryButtonText = "Modifier";
             dialog.CloseButtonText = "Annuler";
             dialog.DefaultButton = ContentDialogButton.Close;
@@ -183,6 +199,8 @@ namespace ProjetSession_prog
 
             if (resultat == ContentDialogResult.Primary)
             {
+                string nomActivite = activites.Nom;
+
                 int id_categorie = dialog.Id_Categorie;
 
                 string type = dialog.Type;
@@ -191,10 +209,20 @@ namespace ProjetSession_prog
 
                 double prix_vente = dialog.Prix_Vente;
 
-
-
-
-
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    try
+                    {
+                        Singleton.getInstance().modifierActivites(nomActivite, id_categorie, type, cout_organisation, prix_vente);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                    }
+                    verif_inscriptions.Text = "La modification a bien fonctionné";
+                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                }
             }
         }
     }

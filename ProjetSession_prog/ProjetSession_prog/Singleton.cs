@@ -442,6 +442,71 @@ namespace ProjetSession_prog
             }
         }
 
+        public void supprimerSeances(int id)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"delete from seances where id = '{id}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
+        public void modifierActivites(string nom_Activite,int id_categorie, string type, double cout_organisation, double prix_vente)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"UPDATE activites SET id_categorie = {id_categorie}, type = '{type}', cout_organisation = {cout_organisation}, prix_vente = {prix_vente} where nom = '{nom_Activite}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
+        public void modifierAdherents(string noIdentification, string nom, string prenom, string adresse, string date_naissance)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"UPDATE adherents SET nom = '{nom}', prenom = '{prenom}', adresse = '{adresse}', date_naissance = '{date_naissance}' where no_identification = '{noIdentification}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
 
 
 

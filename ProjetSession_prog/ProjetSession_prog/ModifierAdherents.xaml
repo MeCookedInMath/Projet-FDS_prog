@@ -13,6 +13,6 @@
         <TextBox x:Name="nom" Margin="5" />
         <TextBox x:Name="prenom" Margin="5" />
         <TextBox x:Name="adresse" Margin="5" />
-       
+        <DatePicker x:Name="date_naissance"/>
     </StackPanel>
 </ContentDialog>

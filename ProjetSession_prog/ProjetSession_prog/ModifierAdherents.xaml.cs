@@ -24,7 +24,9 @@ namespace ProjetSession_prog
         public string Nom { get; set; }
         public string Prenom { get; set; }
         public string Adresse { get; set; }
-        
+
+        public string Date_Naissance { get; set; }
+
         public ModifierAdherents(string _nom, string _prenom, string _adresse)
         {
             this.InitializeComponent();
@@ -32,6 +34,7 @@ namespace ProjetSession_prog
             nom.Text = _nom;
             prenom.Text = _prenom;
             adresse.Text = _adresse;
+            
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -39,11 +42,12 @@ namespace ProjetSession_prog
             Nom = nom.Text;
             Prenom = prenom.Text;
             Adresse = adresse.Text;
+            Date_Naissance = date_naissance.Date.ToString("yyyy-MM-dd");
             
 
 
 
-            if (string.IsNullOrEmpty(Nom) || string.IsNullOrEmpty(Prenom) || string.IsNullOrEmpty(Adresse) )
+            if (string.IsNullOrEmpty(Nom) || string.IsNullOrEmpty(Prenom) || string.IsNullOrEmpty(Adresse) || string.IsNullOrEmpty(Date_Naissance))
             {
                 args.Cancel = true;
                 Title = "Tous les champs doivent être remplis";
