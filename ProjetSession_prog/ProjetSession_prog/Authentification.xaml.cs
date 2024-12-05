@@ -100,6 +100,8 @@ namespace ProjetSession_prog
                 if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "adherent")
                 {
                     validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
+
+                    Singleton.getInstance().setMatricule_connection(matricule);
                 }
                 else
                 {

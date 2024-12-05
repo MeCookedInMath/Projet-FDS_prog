@@ -50,8 +50,8 @@
                                     <Flyout>
 
                                         <ListView Header="Liste des séances" x:Name="listeSeancesParAdhérent"
-                                          
-                                          SelectionChanged="listeSeancesParAdhérent_SelectionChanged" 
+                                          ItemsSource="{x:Bind Seances}"
+                                           SelectionChanged="listeSeancesParAdhérent_SelectionChanged"
                                          />     
 
                                     </Flyout>

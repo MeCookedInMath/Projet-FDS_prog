@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -23,11 +24,50 @@ namespace ProjetSession_prog
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+
+        private bool IsAdmin = false;
         public MainWindow()
         {
+
+
             this.InitializeComponent();
             
             mainFrame.Navigate(typeof(Affichage));
+
+
+            UpdateMenuVisibilityAsync();
+        }
+
+        private async Task UpdateMenuVisibilityAsync()
+        {
+
+
+            await Task.Yield();
+            // Vérifier si l'utilisateur est un administrateur
+            if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "admin")
+            {
+                // Afficher les éléments réservés aux administrateurs
+                iStatistiques.Visibility = Visibility.Visible;
+                iAjouter.Visibility = Visibility.Visible;
+                
+            }
+            else
+            {
+                // Masquer les éléments réservés aux administrateurs
+                iStatistiques.Visibility = Visibility.Collapsed;
+                iAjouter.Visibility = Visibility.Collapsed;
+                 
+            }
+
+            if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "adherent")
+            {
+                
+                iInscriptions.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                iInscriptions.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -36,6 +76,8 @@ namespace ProjetSession_prog
         {
             var item = (NavigationViewItem)args.SelectedItem;
 
+            UpdateMenuVisibilityAsync();
+            
             switch (item.Name)
             {
                 case "iAuthentification":
@@ -50,6 +92,9 @@ namespace ProjetSession_prog
                 case "iAjouter":
                     mainFrame.Navigate(typeof(PageAjouter));
                     break;
+                case "iInscriptions":
+                    mainFrame.Navigate(typeof(Inscriptions));
+                    break;
 
 
                 default:
@@ -57,6 +102,8 @@ namespace ProjetSession_prog
             }
 
         }
+
+        
 
 
     }

@@ -16,7 +16,7 @@ namespace ProjetSession_prog
         ObservableCollection<Activites> listeActivites;
         ObservableCollection<Adherents> listeAdherents;
         ObservableCollection<Seances> listeSeances;
-        ObservableCollection<Seances> listeSeancesParAdherent;
+      
         static Singleton instance = null;
 
         Boolean connection = false;
@@ -80,6 +80,10 @@ namespace ProjetSession_prog
             return role;
         }
 
+        public void setMatricule_connection(string no_identification)
+        {
+            matricule_adherent = no_identification;
+        }
 
         public string matricule_connection()
         {
@@ -214,12 +218,12 @@ namespace ProjetSession_prog
 
 
 
-        public ObservableCollection<Seances> getListeSeancesPourAdhérents(string noIdentification)
+        public List<Seances> getListeSeancesPourAdhérents(string noIdentification)
         {
-            
+            List<Seances> listeSeancesParAdherent = new List<Seances>();
             try
             {
-
+                
 
                 Boolean valide = true;
 
@@ -487,6 +491,28 @@ namespace ProjetSession_prog
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
                 commande.CommandText = $"delete from seances where id = '{id}'";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
+        public void supprimerInscriptions(string id_adherent, int id_seance)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"delete from inscriptions where id_seance = {id_seance} and id_adherent = '{id_adherent}'";
 
                 con.Open();
                 commande.Prepare();

@@ -18,6 +18,8 @@
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Ajouter" x:Name="iAjouter" Icon="People" Background="PaleGoldenrod" Tag="Page4"/>
             <NavigationViewItemSeparator />
+            <NavigationViewItem Content="Mes inscriptions" x:Name="iInscriptions" Icon="People" Background="PaleGreen" Tag="Page5"/>
+            <NavigationViewItemSeparator />
 
 
 

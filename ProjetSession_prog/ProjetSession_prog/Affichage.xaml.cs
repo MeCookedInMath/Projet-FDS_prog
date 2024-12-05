@@ -56,10 +56,7 @@ namespace ProjetSession_prog
 
                     
                 }
-                else
-                {
-                    
-                }
+                
                 
                
             }
@@ -301,9 +298,48 @@ namespace ProjetSession_prog
 
         }
 
-        private void listeSeancesParAdhérent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void listeSeancesParAdhérent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //compléter cette partie
+            try
+            {
+                if (Singleton.getInstance().IsSetConnection() == true || Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    ListView listView = sender as ListView;
+
+                    Seances seances = listView.SelectedItem as Seances;
+
+
+                    SupprimerInscription dialog = new SupprimerInscription();
+                    dialog.XamlRoot = this.XamlRoot;
+                    dialog.PrimaryButtonText = "Accepter";
+                    dialog.CloseButtonText = "Annuler";
+                    dialog.DefaultButton = ContentDialogButton.Close;
+
+                    ContentDialogResult resultat = await dialog.ShowAsync();
+
+
+                    if (resultat == ContentDialogResult.Primary)
+                    {
+                        try
+                        {
+                            Singleton.getInstance().supprimerInscriptions(Singleton.getInstance().matricule_connection(), seance.Id);
+                        }
+                        catch (MySqlException ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                        }
+
+                        listView.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 }

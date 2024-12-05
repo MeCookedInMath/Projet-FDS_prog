@@ -15,6 +15,7 @@ namespace ProjetSession_prog
         string adresse;
         string date_naissance;
         int age;
+        List<Seances> seances;
 
 
         public Adherents(string _no_identification, string _nom, string _prenom, string _adresse, string _date_naissance, int _age)
@@ -64,6 +65,12 @@ namespace ProjetSession_prog
         {
             get { return age; }
             set { age = value; }
+        }
+
+        public List<Seances> Seances
+        {
+            get { return Singleton.getInstance().getListeSeancesPourAdhérents(no_identification); }
+            set { seances = value; }
         }
 
 
