@@ -21,25 +21,26 @@ namespace ProjetSession_prog
 
     public sealed partial class ModifierSeances : ContentDialog
     {
-        
+        public string NomActivite { get; set; }
         public string Date { get; set; }
 
         public string Heure { get; set; }
 
         public int Nbr_Places { get; set; }
 
-        public ModifierSeances(string _date, string _heure, int _nbrPlaces)
+        public ModifierSeances(string _nomActivite,string _date, string _heure, int _nbrPlaces)
         {
             this.InitializeComponent();
 
-            this.Date = _date;
-            this.Heure = _heure;
-            this.Nbr_Places = _nbrPlaces;
+            nomActivite.Text = _nomActivite;
+            date_seance.Date = Convert.ToDateTime(_date);
+            heure_seance.Time = TimeSpan.Parse(_heure);
+            nbr_places.Text = _nbrPlaces.ToString();
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            
+            NomActivite = nomActivite.Text;
             Date = date_seance.Date.ToString("yyyy-MM-dd");
             Heure = heure_seance.Time.ToString();
             Nbr_Places = Convert.ToInt32(nbr_places.Text);
@@ -47,11 +48,13 @@ namespace ProjetSession_prog
 
 
             int nombre;
-            if ( string.IsNullOrEmpty(Date) || string.IsNullOrEmpty(Heure) || Int32.TryParse(Nbr_Places.ToString(), out nombre) == false)
+            if (string.IsNullOrEmpty(NomActivite) || string.IsNullOrEmpty(Date) || string.IsNullOrEmpty(Heure) || Int32.TryParse(Nbr_Places.ToString(), out nombre) == false)
             {
                 args.Cancel = true;
                 Title = "Tous les champs doivent être remplis ou avoir des valeurs au bon format";
             }
         }
+
+        
     }
 }

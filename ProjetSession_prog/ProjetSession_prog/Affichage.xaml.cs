@@ -225,5 +225,71 @@ namespace ProjetSession_prog
                 }
             }
         }
+
+        private async void lv_SeancesASupprimer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView modifier = sender as ListView;
+
+            Seances seance = modifier.SelectedItem as Seances;
+
+            ModifierSeances dialog = new ModifierSeances(seance.Nom_Activite, seance.Date, seance.Heure, seance.Nbr_Places);
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Modifier l'activité";
+            dialog.PrimaryButtonText = "Modifier";
+            dialog.SecondaryButtonText = "Supprimer";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
+
+            ContentDialogResult resultat = await dialog.ShowAsync();
+
+
+            if (resultat == ContentDialogResult.Primary)
+            {
+                int id = seance.Id;
+
+                string nomActivite = dialog.NomActivite;
+
+                string date = dialog.Date;
+
+                string heure = dialog.Heure;
+
+                int nbrPlaces = dialog.Nbr_Places;
+
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    try
+                    {
+                        Singleton.getInstance().modifierSeances(id, nomActivite, date, heure, nbrPlaces);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        verif_inscriptions.Text = "La modification n'a pas fonctionné.";
+                    }
+                    verif_inscriptions.Text = "La modification a bien fonctionné";
+                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                }
+            }
+
+
+            if (resultat == ContentDialogResult.Secondary)
+            {
+                if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
+                {
+                    try
+                    {
+                        Singleton.getInstance().supprimerSeances(seance.Id);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        verif_inscriptions.Text = "La séance n'a pas pu être supprimée";
+                    }
+                    verif_inscriptions.Text = "La séance a bien été supprimée";
+                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                }
+            }
+
+        }
     }
 }

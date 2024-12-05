@@ -509,6 +509,32 @@ namespace ProjetSession_prog
 
 
 
+        public void modifierSeances(int id, string nomActivite, string date, string heure, int nbrPlaces)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"update seances SET nom_activite = '{nomActivite}', date = '{date}', heure = '{heure}', nbr_places = {nbrPlaces} where id = {id}";
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+        }
+
+
+
+
+
+
 
 
 
