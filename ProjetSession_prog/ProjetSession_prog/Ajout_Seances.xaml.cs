@@ -28,28 +28,101 @@ namespace ProjetSession_prog
 
         public int Nbr_Places { get; set; }
 
+        public Boolean Valide {  get; set; }
+
         public Ajout_Seances()
         {
             this.InitializeComponent();
+
+            foreach (Activites activite in Singleton.getInstance().getListeActivites())
+            {
+                nom_activite.Items.Add(activite.Nom);
+            }
         }
 
 
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            Nom_Activite = nom_activite.Text;
-            Date = date_seance.Date.ToString("yyyy-MM-dd");
-            Heure = heure_seance.Time.ToString();
+            Valide = true;
+             int nombre;
+
+            
+            
             Nbr_Places = Convert.ToInt32(nbr_places.Text);
 
-
-
-            int nombre;
-            if (string.IsNullOrEmpty(Nom_Activite) || string.IsNullOrEmpty(Date) || string.IsNullOrEmpty(Heure) || Int32.TryParse(Nbr_Places.ToString(),out nombre) == false )
+            if (string.IsNullOrEmpty(nom_activite.SelectedItem.ToString()))
             {
-                args.Cancel = true;
-                Title = "Tous les champs doivent être remplis ou avoir des valeurs au bon format";
+                erreur_nom.Visibility = Visibility.Visible;
+                erreur_nom.Text = "Ce champ doit être rempli";
+                Valide = false;
             }
+            else {
+                erreur_nom.Visibility = Visibility.Collapsed;
+                Valide = true;
+                Nom_Activite = nom_activite.SelectedItem.ToString();
+            }
+
+            if (string.IsNullOrEmpty(date_seance.Date.ToString()))
+            {
+                erreur_date.Visibility = Visibility.Visible;
+                erreur_date.Text = "Ce champ doit être rempli";
+                Valide = false;
+            }
+            else
+            {
+                erreur_date.Visibility = Visibility.Collapsed;
+                Valide = true;
+                Date = date_seance.Date.ToString("yyyy-MM-dd");
+            }
+
+
+            if (string.IsNullOrEmpty( heure_seance.Time.ToString()) )
+            {
+                erreur_heure.Visibility = Visibility.Visible;
+                erreur_heure.Text = "Ce champ doit être rempli";
+                Valide = false;
+            }
+            else
+            {
+                erreur_heure.Visibility = Visibility.Collapsed;
+                Valide = true;
+                Heure = heure_seance.Time.ToString();
+
+            }
+
+
+            if (string.IsNullOrEmpty(nbr_places.Text))
+            {
+                erreur_nbrPLaces.Visibility = Visibility.Visible;
+                erreur_nbrPLaces.Text = "Ce champ doit être rempli";
+                Valide = false;
+            }
+            else {
+                if (Int32.TryParse(Nbr_Places.ToString(), out nombre) == false)
+                {
+                    erreur_nbrPLaces.Visibility = Visibility.Visible;
+                    erreur_nbrPLaces.Text = "La valeur entré doit être numérique";
+                    Valide = false;
+                }
+                else
+                {
+                    erreur_nbrPLaces.Visibility = Visibility.Collapsed;
+                    Valide = true;
+                    Nbr_Places = Convert.ToInt32(nbr_places.Text);
+                }
+            }
+
+
+            if (Valide) {
+                args.Cancel = true;
+            }
+            else
+            {
+                args.Cancel = false;
+            }
+
+            
         }
 
     }

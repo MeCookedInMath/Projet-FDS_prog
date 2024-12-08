@@ -30,6 +30,7 @@
                         <TextBlock Text="{x:Bind Heure}" Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Nbr_Places}" Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Note}" Margin="0,5,0,5"/>
+                        <Button Content="Évaluer" x:Name="evaluer_seances" Click="evaluer_seances_Click"/>
                     </StackPanel>
                 </DataTemplate>
 

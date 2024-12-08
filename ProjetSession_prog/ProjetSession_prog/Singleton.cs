@@ -90,14 +90,14 @@ namespace ProjetSession_prog
             return matricule_adherent;
         }
 
+        
+
 
 
         public ObservableCollection<Activites> getListeActivites()
         {
             try
             {
-
-
                 Boolean valide = true;
 
 
@@ -592,6 +592,30 @@ namespace ProjetSession_prog
                 Debug.WriteLine(ex.Message);
                 con.Close();
             }
+        }
+
+        public void evaluerSeances(string noIdentification, int idSeance, int note)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("insertion_evaluations");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.Parameters.AddWithValue("idDeAdherent", noIdentification);
+                commande.Parameters.AddWithValue("idDeSeances", idSeance);
+                commande.Parameters.AddWithValue("noteDeSeances", note);
+
+
+                con.Open();
+                commande.Prepare();
+                int i = commande.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+            con.Close();
         }
 
 

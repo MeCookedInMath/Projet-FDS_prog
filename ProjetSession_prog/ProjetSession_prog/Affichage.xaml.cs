@@ -229,6 +229,8 @@ namespace ProjetSession_prog
 
             Seances seance = modifier.SelectedItem as Seances;
 
+
+
             ModifierSeances dialog = new ModifierSeances(seance.Nom_Activite, seance.Date, seance.Heure, seance.Nbr_Places);
             dialog.XamlRoot = this.XamlRoot;
             dialog.Title = "Modifier l'activité";
@@ -306,7 +308,9 @@ namespace ProjetSession_prog
                 {
                     ListView listView = sender as ListView;
 
-                    Seances seances = listView.SelectedItem as Seances;
+                    Seances seance = listView.SelectedItem as Seances;
+
+                    Adherents adherent = listView.DataContext as Adherents;
 
 
                     SupprimerInscription dialog = new SupprimerInscription();
@@ -322,7 +326,7 @@ namespace ProjetSession_prog
                     {
                         try
                         {
-                            Singleton.getInstance().supprimerInscriptions(Singleton.getInstance().matricule_connection(), seance.Id);
+                            Singleton.getInstance().supprimerInscriptions(adherent.No_Identification, seance.Id);
                         }
                         catch (MySqlException ex)
                         {

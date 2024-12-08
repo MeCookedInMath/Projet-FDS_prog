@@ -43,7 +43,7 @@
 
 
 
-
+        <Frame x:Name="mainFrame"></Frame>
 
 
     </Grid>

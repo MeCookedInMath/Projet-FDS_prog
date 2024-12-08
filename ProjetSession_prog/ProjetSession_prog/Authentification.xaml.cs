@@ -65,6 +65,8 @@ namespace ProjetSession_prog
                 if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
                 {
                     validation_connexion1.Text = "Vous êtes bien connecté en tant qu'administrateur.";
+
+                   
                 }
                 else
                 {
@@ -102,6 +104,8 @@ namespace ProjetSession_prog
                     validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
 
                     Singleton.getInstance().setMatricule_connection(matricule);
+
+                
                 }
                 else
                 {

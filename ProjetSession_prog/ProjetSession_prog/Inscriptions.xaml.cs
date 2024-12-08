@@ -63,5 +63,39 @@ namespace ProjetSession_prog
                 listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
             }
         }
+
+        
+
+        private async void evaluer_seances_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            Seances seances = button.DataContext as Seances;
+
+            EvaluerSeances dialog = new EvaluerSeances();
+            dialog.XamlRoot = this.XamlRoot;
+            dialog.Title = "Évaluation de la séance";
+            dialog.PrimaryButtonText = "Enregistrer la note";
+            dialog.CloseButtonText = "Annuler";
+            dialog.DefaultButton = ContentDialogButton.Close;
+
+            ContentDialogResult resultat = await dialog.ShowAsync();
+
+
+            if (resultat == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    
+                    Singleton.getInstance().evaluerSeances(Singleton.getInstance().matricule_connection(), seances.Id, dialog.Note);
+                }
+                catch (MySqlException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
+                listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
+            }
+
+        }
     }
 }

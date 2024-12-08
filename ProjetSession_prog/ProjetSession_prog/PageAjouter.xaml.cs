@@ -43,21 +43,26 @@ namespace ProjetSession_prog
 
             if (resultat == ContentDialogResult.Primary)
             {
-                string nom = dialog.Nom;
-                int id_categorie = dialog.Id_Categorie;
-                string type = dialog.Type;
-                double cout_organisation = dialog.Cout_Organisation;
-                double prix_vente = dialog.Prix_Vente;
-
-                try
+                if (dialog.Valide == true)
                 {
-                    Singleton.getInstance().creer_Activites(nom, id_categorie, type, cout_organisation, prix_vente);
-                    validation_click.Text = "L'ajout a bien fonctionné";
+                    string nom = dialog.Nom;
+                    int id_categorie = dialog.Id_Categorie;
+                    string type = dialog.Type;
+                    double cout_organisation = dialog.Cout_Organisation;
+                    double prix_vente = dialog.Prix_Vente;
+
+                    try
+                    {
+                        Singleton.getInstance().creer_Activites(nom, id_categorie, type, cout_organisation, prix_vente);
+                        validation_click.Text = "L'ajout a bien fonctionné";
+                    }
+                    catch (MySqlException ex) { 
+                        Debug.WriteLine("L'ajout n'a pas fonctionné" + ex.Message);
+                        validation_click.Text = "L'ajout n'a pas fonctionné";
+                    }
                 }
-                catch (MySqlException ex) { 
-                    Debug.WriteLine("L'ajout n'a pas fonctionné" + ex.Message);
-                    validation_click.Text = "L'ajout n'a pas fonctionné";
-                }
+
+                
                 
 
                 

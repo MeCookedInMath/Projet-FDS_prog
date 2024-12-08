@@ -18,7 +18,9 @@
     <None Remove="Ajout_Seances.xaml" />
     <None Remove="Authentification.xaml" />
     <None Remove="controleUtilisateur.xaml" />
+    <None Remove="EvaluerSeances.xaml" />
     <None Remove="Inscriptions.xaml" />
+    <None Remove="Message_User.xaml" />
     <None Remove="ModifierActivites.xaml" />
     <None Remove="ModifierAdherents.xaml" />
     <None Remove="ModifierSeances.xaml" />
@@ -51,6 +53,16 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Message_User.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="EvaluerSeances.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="SupprimerInscription.xaml">
