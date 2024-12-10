@@ -43,8 +43,8 @@ namespace ProjetSession_prog
 
             if (resultat == ContentDialogResult.Primary)
             {
-                if (dialog.Valide == true)
-                {
+                
+                
                     string nom = dialog.Nom;
                     int id_categorie = dialog.Id_Categorie;
                     string type = dialog.Type;
@@ -60,7 +60,7 @@ namespace ProjetSession_prog
                         Debug.WriteLine("L'ajout n'a pas fonctionné" + ex.Message);
                         validation_click.Text = "L'ajout n'a pas fonctionné";
                     }
-                }
+                
 
                 
                 

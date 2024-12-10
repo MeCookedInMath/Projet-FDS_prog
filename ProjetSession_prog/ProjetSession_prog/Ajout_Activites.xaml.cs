@@ -41,93 +41,93 @@ namespace ProjetSession_prog
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            
-            Id_Categorie = id_categorie.SelectedIndex;
-            
+            Valide = true;  // Par défaut, on suppose que tout est valide
+
+            // Validation du champ "Nom"
             if (string.IsNullOrEmpty(nom_activite.Text))
             {
                 erreur_nom.Text = "Le champ nom ne peut être vide";
                 erreur_nom.Visibility = Visibility.Visible;
                 Valide = false;
             }
-            else { 
+            else
+            {
                 erreur_nom.Visibility = Visibility.Collapsed;
-                Valide = true;
                 Nom = nom_activite.Text;
             }
 
+            // Validation de la catégorie sélectionnée
+            if (id_categorie.SelectedIndex == -1)
+            {
+                erreur_categorie.Text = "Veuillez sélectionner une catégorie";
+                erreur_categorie.Visibility = Visibility.Visible;
+                Valide = false;
+            }
+            else
+            {
+                erreur_categorie.Visibility = Visibility.Collapsed;
+                Id_Categorie = id_categorie.SelectedIndex;
+            }
+
+            // Validation du coût d'organisation (chiffres uniquement)
             if (string.IsNullOrEmpty(cout_organisation.Text))
             {
                 erreur_coutOrganisation.Text = "Ce champ doit être rempli";
+                erreur_coutOrganisation.Visibility = Visibility.Visible;
                 Valide = false;
             }
-            else { 
-            
-                if (double.TryParse(cout_organisation.Text, out nombre2) == false)
-                {
-                    
-                    erreur_coutOrganisation.Text = "La valeur insérée doit être numérique";
-                    erreur_coutOrganisation.Visibility = Visibility.Visible;
-                    Valide = false;
-                }
-                else
-                {
-                    erreur_coutOrganisation.Visibility = Visibility.Collapsed;
-                    Cout_Organisation = Convert.ToDouble(cout_organisation.Text);
-                    Valide = true;
-                }
-            }
-
-
-            if (string.IsNullOrEmpty(type.Text))
+            else if (!double.TryParse(cout_organisation.Text, out double coutOrganisation))
             {
-                erreur_nom.Text = "Le champ type ne peut être vide";
-                erreur_nom.Visibility = Visibility.Visible;
+                erreur_coutOrganisation.Text = "La valeur insérée doit être numérique";
+                erreur_coutOrganisation.Visibility = Visibility.Visible;
                 Valide = false;
             }
             else
             {
-                erreur_nom.Visibility = Visibility.Collapsed;
-                Valide = true;
+                erreur_coutOrganisation.Visibility = Visibility.Collapsed;
+                Cout_Organisation = coutOrganisation;
+            }
+
+            // Validation du champ "Type"
+            if (string.IsNullOrEmpty(type.Text))
+            {
+                erreur_type.Text = "Le champ type ne peut être vide";
+                erreur_type.Visibility = Visibility.Visible;
+                Valide = false;
+            }
+            else
+            {
+                erreur_type.Visibility = Visibility.Collapsed;
                 Type = type.Text;
             }
 
-
-
+            // Validation du prix de vente (chiffres uniquement)
             if (string.IsNullOrEmpty(prix_vente.Text))
             {
                 erreur_prixVente.Text = "Ce champ doit être rempli";
-
+                erreur_prixVente.Visibility = Visibility.Visible;
+                Valide = false;
+            }
+            else if (!double.TryParse(prix_vente.Text, out double prixVente))
+            {
+                erreur_prixVente.Text = "La valeur insérée doit être numérique";
+                erreur_prixVente.Visibility = Visibility.Visible;
                 Valide = false;
             }
             else
             {
-                if (double.TryParse(prix_vente.Text, out nombre2) == false)
-                {
-                    erreur_prixVente.Text = "La valeur insérée doit être numérique";
-                    erreur_prixVente.Visibility = Visibility.Visible;
-                    Valide = false;
-                }
-                else
-                {
-                    erreur_prixVente.Visibility = Visibility.Collapsed;
-                    Prix_Vente = Convert.ToDouble(prix_vente.Text);
-                    Valide = true;
-                }
+                erreur_prixVente.Visibility = Visibility.Collapsed;
+                Prix_Vente = prixVente;
             }
 
-            
-
-
-            
-
-
-
-
-
+            // Si l'une des validations échoue, annuler la fermeture du dialog
+            if (!Valide)
+            {
+                args.Cancel = true;
+            }
         }
 
-       
+
 
 
     }

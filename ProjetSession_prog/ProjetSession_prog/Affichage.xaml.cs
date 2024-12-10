@@ -210,7 +210,7 @@ namespace ProjetSession_prog
                 {
                     try
                     {
-                        Singleton.getInstance().modifierActivites(nomActivite, id_categorie, type, cout_organisation, prix_vente);
+                        Singleton.getInstance().modifierActivites(nomActivite, id_categorie+1, type, cout_organisation, prix_vente);
                     }
                     catch (MySqlException ex)
                     {
@@ -218,7 +218,7 @@ namespace ProjetSession_prog
                         
                     }
                     
-                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                    liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
                 }
             }
         }
@@ -266,10 +266,12 @@ namespace ProjetSession_prog
                         
                     }
                     
-                    liste_adherents.ItemsSource = Singleton.getInstance().getListeActivites();
+                    
                 }
             }
 
+
+            // checker cette méthode car quand on modifie, ca supprime tout de suite après
 
             if (resultat == ContentDialogResult.Secondary)
             {

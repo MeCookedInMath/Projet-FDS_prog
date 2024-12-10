@@ -34,6 +34,9 @@ namespace ProjetSession_prog
         {
             this.InitializeComponent();
 
+            date_seance.MinYear = DateTimeOffset.Now;
+            date_seance.MaxYear = DateTimeOffset.Now.AddYears(3);
+
             foreach (Activites activite in Singleton.getInstance().getListeActivites())
             {
                 nom_activite.Items.Add(activite.Nom);
@@ -42,28 +45,31 @@ namespace ProjetSession_prog
 
 
 
+
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+           
+            erreur_nom.Visibility = Visibility.Collapsed;
+            erreur_date.Visibility = Visibility.Collapsed;
+            erreur_heure.Visibility = Visibility.Collapsed;
+            erreur_nbrPLaces.Visibility = Visibility.Collapsed;
+
             Valide = true;
-             int nombre;
 
             
-            
-            Nbr_Places = Convert.ToInt32(nbr_places.Text);
-
-            if (string.IsNullOrEmpty(nom_activite.SelectedItem.ToString()))
+            if (string.IsNullOrEmpty(nom_activite.SelectedItem?.ToString()))
             {
                 erreur_nom.Visibility = Visibility.Visible;
                 erreur_nom.Text = "Ce champ doit être rempli";
                 Valide = false;
             }
-            else {
-                erreur_nom.Visibility = Visibility.Collapsed;
-                Valide = true;
+            else
+            {
                 Nom_Activite = nom_activite.SelectedItem.ToString();
             }
 
-            if (string.IsNullOrEmpty(date_seance.Date.ToString()))
+           
+            if (date_seance.Date == null)
             {
                 erreur_date.Visibility = Visibility.Visible;
                 erreur_date.Text = "Ce champ doit être rempli";
@@ -71,13 +77,11 @@ namespace ProjetSession_prog
             }
             else
             {
-                erreur_date.Visibility = Visibility.Collapsed;
-                Valide = true;
                 Date = date_seance.Date.ToString("yyyy-MM-dd");
             }
 
-
-            if (string.IsNullOrEmpty( heure_seance.Time.ToString()) )
+            
+            if (heure_seance.Time == null)
             {
                 erreur_heure.Visibility = Visibility.Visible;
                 erreur_heure.Text = "Ce champ doit être rempli";
@@ -85,44 +89,32 @@ namespace ProjetSession_prog
             }
             else
             {
-                erreur_heure.Visibility = Visibility.Collapsed;
-                Valide = true;
                 Heure = heure_seance.Time.ToString();
-
             }
 
-
+           
             if (string.IsNullOrEmpty(nbr_places.Text))
             {
                 erreur_nbrPLaces.Visibility = Visibility.Visible;
                 erreur_nbrPLaces.Text = "Ce champ doit être rempli";
                 Valide = false;
             }
-            else {
-                if (Int32.TryParse(Nbr_Places.ToString(), out nombre) == false)
+            else
+            {
+                if (!int.TryParse(nbr_places.Text, out int nombre) || nombre <= 0)
                 {
                     erreur_nbrPLaces.Visibility = Visibility.Visible;
-                    erreur_nbrPLaces.Text = "La valeur entré doit être numérique";
+                    erreur_nbrPLaces.Text = "La valeur entrée doit être un nombre valide supérieur à zéro";
                     Valide = false;
                 }
                 else
                 {
-                    erreur_nbrPLaces.Visibility = Visibility.Collapsed;
-                    Valide = true;
-                    Nbr_Places = Convert.ToInt32(nbr_places.Text);
+                    Nbr_Places = nombre;
                 }
             }
 
-
-            if (Valide) {
-                args.Cancel = true;
-            }
-            else
-            {
-                args.Cancel = false;
-            }
-
             
+            args.Cancel = !Valide;
         }
 
     }

@@ -10,9 +10,13 @@
     >
 
     <StackPanel>
-        <TextBox x:Name="nom" Margin="5" />
-        <TextBox x:Name="prenom" Margin="5" />
-        <TextBox x:Name="adresse" Margin="5" />
-        <DatePicker x:Name="date_naissance"/>
+        <TextBox x:Name="nom" Margin="5" Header="Nom"/>
+        <TextBlock x:Name="erreur_nom" Margin="5" Foreground="Red" Visibility="Collapsed"/>
+        <TextBox x:Name="prenom" Margin="5" Header="Prénom" />
+        <TextBlock x:Name="erreur_prenom" Margin="5" Foreground="Red" Visibility="Collapsed"/>
+        <TextBox x:Name="adresse" Margin="5" Header="Adresse" />
+        <TextBlock x:Name="erreur_adresse" Margin="5" Foreground="Red" Visibility="Collapsed"/>
+        <DatePicker x:Name="date_naissance" Header="Date de naissance"/>
+        <TextBlock x:Name="erreur_dateNaissance" Margin="5" Foreground="Red" Visibility="Collapsed"/>
     </StackPanel>
 </ContentDialog>

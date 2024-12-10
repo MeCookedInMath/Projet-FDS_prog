@@ -534,8 +534,14 @@ namespace ProjetSession_prog
             {
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
-                commande.CommandText = $"UPDATE activites SET id_categorie = {id_categorie}, type = '{type}', cout_organisation = {cout_organisation}, prix_vente = {prix_vente} where nom = '{nom_Activite}'";
+                commande.CommandText = "UPDATE activites SET id_categorie = @id_categorie, type = @type, cout_organisation = @cout_organisation, prix_vente = @prix_vente WHERE nom = @nom_Activite";
 
+                // Add parameters to the command
+                commande.Parameters.AddWithValue("@id_categorie", id_categorie);
+                commande.Parameters.AddWithValue("@type", type);
+                commande.Parameters.AddWithValue("@cout_organisation", cout_organisation);
+                commande.Parameters.AddWithValue("@prix_vente", prix_vente);
+                commande.Parameters.AddWithValue("@nom_Activite", nom_Activite);
                 con.Open();
                 commande.Prepare();
                 commande.ExecuteNonQuery();
@@ -579,7 +585,13 @@ namespace ProjetSession_prog
             {
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
-                commande.CommandText = $"update seances SET nom_activite = '{nomActivite}', date = '{date}', heure = '{heure}', nbr_places = {nbrPlaces} where id = {id}";
+                commande.CommandText = "update seances SET nom_activite = @nomActivite, date = @date, heure = @heure, nbr_places = @nbr_places where id = @id";
+
+                commande.Parameters.AddWithValue("@nomActivite", nomActivite);
+                commande.Parameters.AddWithValue("@date", date);
+                commande.Parameters.AddWithValue("@heure", heure);
+                commande.Parameters.AddWithValue("@nbr_places", nbrPlaces);
+                commande.Parameters.AddWithValue("@id", id);
 
                 con.Open();
                 commande.Prepare();

@@ -12,9 +12,9 @@
         <ComboBox x:Name="nom_activite" Margin="5">
         </ComboBox>
         <TextBlock x:Name="erreur_nom" Foreground="red" Margin="5" Visibility="Collapsed"/>
-        <DatePicker Header="Date" x:Name="date_seance"  YearVisible="False"/>
+        <DatePicker Header="Date" x:Name="date_seance"  YearVisible="False" Margin="5"/>
         <TextBlock x:Name="erreur_date" Foreground="red" Margin="5" Visibility="Collapsed"/>
-        <TimePicker x:Name="heure_seance"/>
+        <TimePicker x:Name="heure_seance" Margin="5"/>
         <TextBlock x:Name="erreur_heure" Foreground="red" Margin="5" Visibility="Collapsed"/>
         <TextBox x:Name="nbr_places" Margin="5"/>
         <TextBlock x:Name="erreur_nbrPLaces" Foreground="red" Margin="5" Visibility="Collapsed"/>

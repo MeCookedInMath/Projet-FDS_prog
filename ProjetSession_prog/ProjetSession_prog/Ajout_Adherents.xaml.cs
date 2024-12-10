@@ -38,25 +38,20 @@ namespace ProjetSession_prog
         {
             Valide = true;
 
-
             
-            
-            
-           
-
-
             if (string.IsNullOrEmpty(nom.Text))
             {
                 erreur_nom.Visibility = Visibility.Visible;
                 erreur_nom.Text = "Ce champ ne peut pas être vide";
                 Valide = false;
             }
-            else { 
+            else
+            {
                 erreur_nom.Visibility = Visibility.Collapsed;
                 Nom = nom.Text;
-                Valide= true;
             }
 
+            
             if (string.IsNullOrEmpty(prenom.Text))
             {
                 erreur_prenom.Visibility = Visibility.Visible;
@@ -67,9 +62,9 @@ namespace ProjetSession_prog
             {
                 erreur_prenom.Visibility = Visibility.Collapsed;
                 Prenom = prenom.Text;
-                Valide= true;
             }
 
+            
             if (string.IsNullOrEmpty(adresse.Text))
             {
                 erreur_adresse.Visibility = Visibility.Visible;
@@ -78,20 +73,21 @@ namespace ProjetSession_prog
             }
             else
             {
-                if (Regex.IsMatch(adresse.Text, "^[0-9]+[ ]+[A-Za-zéèàôêù\s\'-]+$"))
+                if (Regex.IsMatch(adresse.Text, "^[0-9] [a-z]$")) // rechecker le regex demain au plus sacrant
                 {
                     erreur_adresse.Visibility = Visibility.Collapsed;
                     Adresse = adresse.Text;
-                    Valide = true;
                 }
-                else {
+                else
+                {
                     erreur_adresse.Visibility = Visibility.Visible;
                     erreur_adresse.Text = "L'adresse donnée n'est pas conforme au format voulu.(ex : 4291 rang de l'acadie)";
                     Valide = false;
                 }
             }
 
-            if ( string.IsNullOrEmpty(date_naissance.Date.ToString()) )
+            
+            if (date_naissance.Date == null)
             {
                 erreur_dateNaissance.Visibility = Visibility.Visible;
                 erreur_dateNaissance.Text = "Ce champ ne peut pas être vide";
@@ -101,19 +97,13 @@ namespace ProjetSession_prog
             {
                 erreur_dateNaissance.Visibility = Visibility.Collapsed;
                 Date_Naissance = date_naissance.Date.ToString("yyyy-MM-dd");
-                Valide = true;
             }
 
-
-
-            if (Valide == false)
-            {
-                args.Cancel = true;
-            }
-            else {
-                args.Cancel = false;
-            }
+            
+            args.Cancel = !Valide;
         }
+
+
 
 
     }

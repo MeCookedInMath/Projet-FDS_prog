@@ -10,9 +10,19 @@
     >
 
     <StackPanel>
-        <TextBox x:Name="id_categorie" Margin="5" />
-        <TextBox x:Name="type" Margin="5" />
-        <TextBox x:Name="cout_organisation" Margin="5" />
-        <TextBox x:Name="prix_vente" Margin="5" />
+        <ComboBox x:Name="id_categorie" Margin="5" SelectedIndex="1" Header="Catégorie de l'activité">
+            <x:String>Sports</x:String>
+            <x:String>Sciences</x:String>
+            <x:String>Arts</x:String>
+            <x:String>Divertissements</x:String>
+            <x:String>Lectures</x:String>
+        </ComboBox>
+        <TextBlock x:Name="erreur_categorie" Visibility="Collapsed"/>
+        <TextBox x:Name="type" Margin="5" Header="Type de l'activité" />
+        <TextBlock x:Name="erreur_type" Visibility="Collapsed"/>
+        <TextBox x:Name="cout_organisation" Margin="5" Header="Coût de l'organisation" />
+        <TextBlock x:Name="erreur_coutOrganisation" Visibility="Collapsed"/>
+        <TextBox x:Name="prix_vente" Margin="5" Header="Prix de vente" />
+        <TextBlock x:Name="erreur_prixVente" Visibility="Collapsed"/>
     </StackPanel>
 </ContentDialog>

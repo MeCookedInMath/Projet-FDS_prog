@@ -28,31 +28,86 @@ namespace ProjetSession_prog
 
         public int Nbr_Places { get; set; }
 
+        public Boolean Valide { get; set; }
+
         public ModifierSeances(string _nomActivite,string _date, string _heure, int _nbrPlaces)
         {
             this.InitializeComponent();
+            date_seance.MinYear = DateTimeOffset.Now;
+            date_seance.MaxYear = DateTimeOffset.Now.AddYears(3); 
 
-            nomActivite.Text = _nomActivite;
+            
             date_seance.Date = Convert.ToDateTime(_date);
             heure_seance.Time = TimeSpan.Parse(_heure);
             nbr_places.Text = _nbrPlaces.ToString();
+
+            foreach (Activites activite in Singleton.getInstance().getListeActivites())
+            {
+                nomActivite.Items.Add(activite.Nom);
+            }
+
+            nomActivite.SelectedIndex = 0;
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            NomActivite = nomActivite.Text;
-            Date = date_seance.Date.ToString("yyyy-MM-dd");
-            Heure = heure_seance.Time.ToString();
-            Nbr_Places = Convert.ToInt32(nbr_places.Text);
+            erreur_nom.Visibility = Visibility.Collapsed;
+            erreur_date.Visibility = Visibility.Collapsed;
+            erreur_heure.Visibility = Visibility.Collapsed;
+            erreur_nbrPLaces.Visibility = Visibility.Collapsed;
+
+            Valide = true;
+
+            NomActivite = nomActivite.SelectedItem.ToString();
+            
 
 
-
-            int nombre;
-            if (string.IsNullOrEmpty(NomActivite) || string.IsNullOrEmpty(Date) || string.IsNullOrEmpty(Heure) || Int32.TryParse(Nbr_Places.ToString(), out nombre) == false)
+            if (date_seance.Date.ToString() == null)
             {
-                args.Cancel = true;
-                Title = "Tous les champs doivent être remplis ou avoir des valeurs au bon format";
+                erreur_date.Visibility = Visibility.Visible;
+                erreur_date.Text = "Ce champ doit être rempli";
+                Valide = false;
             }
+            else
+            {
+                Date = date_seance.Date.ToString("yyyy-MM-dd");
+            }
+
+
+            if (heure_seance.Time.ToString() == null)
+            {
+                erreur_heure.Visibility = Visibility.Visible;
+                erreur_heure.Text = "Ce champ doit être rempli";
+                Valide = false;
+            }
+            else
+            {
+                Heure = heure_seance.Time.ToString();
+            }
+
+
+            if (string.IsNullOrEmpty(nbr_places.Text))
+            {
+                erreur_nbrPLaces.Visibility = Visibility.Visible;
+                erreur_nbrPLaces.Text = "Ce champ doit être rempli";
+                Valide = false;
+            }
+            else
+            {
+                if (!int.TryParse(nbr_places.Text, out int nombre) || nombre <= 0)
+                {
+                    erreur_nbrPLaces.Visibility = Visibility.Visible;
+                    erreur_nbrPLaces.Text = "La valeur entrée doit être un nombre valide supérieur à zéro";
+                    Valide = false;
+                }
+                else
+                {
+                    Nbr_Places = nombre;
+                }
+            }
+
+
+            args.Cancel = !Valide;
         }
 
         
