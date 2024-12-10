@@ -252,7 +252,7 @@ namespace ProjetSession_prog
             }
         }
 
-        private async void lv_SeancesASupprimer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void lv_SeancesAModifier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListView modifier = sender as ListView;
 
