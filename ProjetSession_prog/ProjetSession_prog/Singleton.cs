@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.UI.Xaml.Controls;
+using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace ProjetSession_prog
         Boolean connection = false;
         string role = null;
         string matricule_adherent = null;
+        Adherents adherentConnecte;
 
         MySqlConnection con =  new MySqlConnection("Server=cours.cegep3r.info;Database=a2024_420335ri_eq6;Uid=2258419;Pwd=2258419;");
 
@@ -90,8 +92,55 @@ namespace ProjetSession_prog
             return matricule_adherent;
         }
 
+
+        public Adherents getAdherentConnecte()
+        {
+            
+            try
+            {
+
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"Select * from adherents where no_identification = '{Singleton.getInstance().matricule_connection()}'";
+                con.Open();
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                     adherentConnecte = new Adherents(   r["no_identification"].ToString(), r["nom"].ToString(), r["prenom"].ToString(),
+                        r["adresse"].ToString(), r["date_naissance"].ToString(), Convert.ToInt32(r["age"].ToString())   );
+                }
+
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+
+            return adherentConnecte;
+        }
+
         
 
+        public async void setMessageUtilisateur(string message, Microsoft.UI.Xaml.UIElement uiElement)
+        {
+            
+            ContentDialog dialog = new ContentDialog
+            {
+                Title = "Mon titre",
+                CloseButtonText = "OK",
+                Content = message
+            };
+
+           
+            dialog.XamlRoot = uiElement.XamlRoot;
+
+          
+            var result = await dialog.ShowAsync();
+
+        }
 
 
         public ObservableCollection<Activites> getListeActivites()

@@ -55,9 +55,13 @@ namespace ProjetSession_prog
                 try
                 {
                     Singleton.getInstance().supprimerInscriptions(Singleton.getInstance().matricule_connection(), seance.Id);
+
+                    Singleton.getInstance().setMessageUtilisateur("L'adhérent a bien été désinscrits de cette séance", this);
                 }
                 catch(MySqlException ex) {
                     Debug.WriteLine(ex.Message);
+
+                    Singleton.getInstance().setMessageUtilisateur("L'adhérent n'a pas été désinscrits de cette séance", this);
                 }
 
                 listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
@@ -87,10 +91,13 @@ namespace ProjetSession_prog
                 {
                     
                     Singleton.getInstance().evaluerSeances(Singleton.getInstance().matricule_connection(), seances.Id, dialog.Note);
+
+                    Singleton.getInstance().setMessageUtilisateur("Votre évaluation a été enregistrée", this);
                 }
                 catch (MySqlException ex)
                 {
                     Debug.WriteLine(ex.Message);
+                    Singleton.getInstance().setMessageUtilisateur("Votre évaluation n'a pas été enregistrée", this);
                 }
 
                 listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());

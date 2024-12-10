@@ -49,6 +49,8 @@ namespace ProjetSession_prog
                 // Afficher les éléments réservés aux administrateurs
                 iStatistiques.Visibility = Visibility.Visible;
                 iAjouter.Visibility = Visibility.Visible;
+
+                navItemHeader.Content = "Connecté en tant que qu'administrateur"; 
                 
             }
             else
@@ -61,7 +63,10 @@ namespace ProjetSession_prog
 
             if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "adherent")
             {
-                
+                Adherents adherentConnecte = Singleton.getInstance().getAdherentConnecte();
+                navItemHeader.Content = "Connecté en tant que " + adherentConnecte.Prenom + " " + adherentConnecte.Nom;
+
+
                 iInscriptions.Visibility = Visibility.Visible;
             }
             else

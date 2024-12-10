@@ -54,7 +54,14 @@ namespace ProjetSession_prog
 
                     Singleton.getInstance().creer_Inscriptions(seances.Id, Singleton.getInstance().matricule_connection());
 
+                    Singleton.getInstance().setMessageUtilisateur("L'inscription a fonctionné", this);
+
                     
+                }
+                else
+                {
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez vous inscrire si vous n'êtes pas un adhérent", this);
+
                 }
                 
                 
@@ -63,6 +70,7 @@ namespace ProjetSession_prog
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                Singleton.getInstance().setMessageUtilisateur("L'inscription n'a pas fonctionné", this);
             }
 
             
@@ -85,11 +93,14 @@ namespace ProjetSession_prog
                     collectionProduits.Remove(adherent);
 
                     Singleton.getInstance().supprimerAdherents(adherent.No_Identification);
+
+                    Singleton.getInstance().setMessageUtilisateur("La suppression de l'adhérent a fonctionné", this);
                 }
                 else
                 {
-                    
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez supprimer une activité si vous n'êtes pas un administrateur", this);
                 }
+
 
 
 
@@ -97,6 +108,7 @@ namespace ProjetSession_prog
             catch (Exception error)
             {
                 Debug.WriteLine(error.Message);
+                Singleton.getInstance().setMessageUtilisateur("La suppression de l'adhérent n'a pas fonctionné", this);
             }
         }
 
@@ -117,10 +129,12 @@ namespace ProjetSession_prog
                     collectionProduits.Remove(activite);
 
                     Singleton.getInstance().supprimerActivites(activite.Nom);
+
+                    Singleton.getInstance().setMessageUtilisateur("La suppression de l'activité a bien fonctionné", this);
                 }
                 else
                 {
-                   
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez supprimer une activité si vous n'êtes pas un administrateur", this);
                 }
 
                 
@@ -129,6 +143,7 @@ namespace ProjetSession_prog
             catch (Exception error)
             {
                 Debug.WriteLine(error.Message);
+                Singleton.getInstance().setMessageUtilisateur("La suppression de l'activité n'a pas fonctionné", this);
             }
         }
 
@@ -165,6 +180,9 @@ namespace ProjetSession_prog
                     try
                     {
                         Singleton.getInstance().modifierAdherents(noIdentification, nom, prenom, adresse, dateNaissance);
+                        
+                        Singleton.getInstance().setMessageUtilisateur("La modification a bien fonctionné", this);
+                        
                     }
                     catch(MySqlException ex) { 
                         Debug.WriteLine(ex.Message);
@@ -173,6 +191,10 @@ namespace ProjetSession_prog
                     
 
                     liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
+                }
+                else
+                {
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez modifier un adhérent si vous n'êtes pas un administrateur", this);
                 }
 
             }
@@ -210,16 +232,23 @@ namespace ProjetSession_prog
                 {
                     try
                     {
-                        Singleton.getInstance().modifierActivites(nomActivite, id_categorie+1, type, cout_organisation, prix_vente);
+                        Singleton.getInstance().modifierActivites(nomActivite, id_categorie + 1, type, cout_organisation, prix_vente);
+
+                        Singleton.getInstance().setMessageUtilisateur("L'activité a bien été modifiée", this);
                     }
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        
+                        Singleton.getInstance().setMessageUtilisateur("L'activité n'a pas été modifiée", this);
                     }
-                    
+
                     liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
                 }
+                else {
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez pas modifier une activité si vous n'êtes pas un administrateur", this);
+                }
+
+
             }
         }
 
@@ -241,7 +270,7 @@ namespace ProjetSession_prog
 
             ContentDialogResult resultat = await dialog.ShowAsync();
 
-
+            
             if (resultat == ContentDialogResult.Primary)
             {
                 int id = seance.Id;
@@ -263,15 +292,20 @@ namespace ProjetSession_prog
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        
+
                     }
-                    
-                    
+
+
                 }
+                else {
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez modifier une séance si vous n'êtes pas un administrateur", this);
+                }
+
+
             }
+            
 
-
-            // checker cette méthode car quand on modifie, ca supprime tout de suite après
+           
 
             if (resultat == ContentDialogResult.Secondary)
             {
@@ -281,6 +315,8 @@ namespace ProjetSession_prog
                     {
                         Singleton.getInstance().supprimerSeances(seance.Id);
 
+                        Singleton.getInstance().setMessageUtilisateur("La séance a bien été supprimée", this);
+
                         ObservableCollection<Seances> collectionSeances = modifier.ItemsSource as ObservableCollection<Seances>;
 
                         if (collectionSeances != null)
@@ -288,16 +324,21 @@ namespace ProjetSession_prog
                             collectionSeances.Remove(seance);
                         }
 
-                        
+
                     }
                     catch (MySqlException ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        
+                        Singleton.getInstance().setMessageUtilisateur("La séance n'a pas été supprimée", this);
                     }
-                    
-                    
+
+
                 }
+                else {
+                    Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez modifier une séance si vous n'êtes pas un administrateur", this);
+                }
+
+
             }
 
         }
@@ -329,15 +370,22 @@ namespace ProjetSession_prog
                         try
                         {
                             Singleton.getInstance().supprimerInscriptions(adherent.No_Identification, seance.Id);
+
+                            Singleton.getInstance().setMessageUtilisateur("L'adhérent a bien été désinscrits de cette séance", this);
                         }
                         catch (MySqlException ex)
                         {
                             Debug.WriteLine(ex.Message);
+                            Singleton.getInstance().setMessageUtilisateur("L'adhérent n'a pas été désinscrits de cette séance", this);
                         }
 
                         listView.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
                     }
                 }
+                else {
+                    Singleton.getInstance().setMessageUtilisateur("L'adhérent n'a pas pu être désinscrits de cette séance", this);
+                }
+
 
 
 

@@ -36,8 +36,6 @@ namespace ProjetSession_prog
         {
             Singleton.getInstance().SetConnectionFalse();
 
-            validation_connexion1.Text = null;
-            validation_connexion2.Text = null;
         }
 
         
@@ -64,14 +62,15 @@ namespace ProjetSession_prog
 
                 if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "admin")
                 {
-                    validation_connexion1.Text = "Vous êtes bien connecté en tant qu'administrateur.";
-
                    
+                    Singleton.getInstance().setMessageUtilisateur("Vous êtes bien connecté en tant qu'administrateur", this);
+
+                    
                 }
                 else
                 {
-
-                    validation_connexion1.Text = "La connexion n'a pas fonctionné.";
+                    Singleton.getInstance().setMessageUtilisateur("La connexion n'a pas fonctionné", this);
+                    
                 }
             }
 
@@ -101,16 +100,16 @@ namespace ProjetSession_prog
 
                 if (Singleton.getInstance().IsSetConnection() && Singleton.getInstance().IsSetRole() == "adherent")
                 {
-                    validation_connexion2.Text = $"Vous êtes bien connecté en tant que {mdp}";
 
                     Singleton.getInstance().setMatricule_connection(matricule);
+                    Singleton.getInstance().setMessageUtilisateur("Vous êtes bien connecté en tant qu'adhérent", this);
 
-                
+                    
                 }
                 else
                 {
 
-                    validation_connexion2.Text = "La connexion n'a pas fonctionné.";
+                    Singleton.getInstance().setMessageUtilisateur("La connexion n'a pas fonctionné", this);
                 }
             }
 

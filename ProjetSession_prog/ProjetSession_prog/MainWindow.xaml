@@ -9,7 +9,7 @@
     
     <NavigationView PaneDisplayMode="Left" PaneTitle="Site du centre de loisirs" Foreground="Gold" FontSize="20" FontWeight="Bold" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
-            <NavigationViewItemHeader Content="Gestion"/>
+            <NavigationViewItemHeader x:Name="navItemHeader"/>
             <NavigationViewItem Content="Authentification" x:Name="iAuthentification" Icon="People" Background="IndianRed" Tag="Page1"/>
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Statistiques" x:Name="iStatistiques" Icon="Add" Background="DarkOliveGreen" Tag="Page2"/>

@@ -11,8 +11,8 @@
     >
 
     <StackPanel>
-        <TextBox x:Name="matricule" Margin="5"/>
-        <PasswordBox x:Name="pwd_user" Margin="5" />
+        <TextBox x:Name="matricule" Margin="5" Header="Votre matricule"/>
+        <PasswordBox x:Name="pwd_user" Margin="5" Header="Mot de passe"/>
     </StackPanel>
 
 </ContentDialog>
