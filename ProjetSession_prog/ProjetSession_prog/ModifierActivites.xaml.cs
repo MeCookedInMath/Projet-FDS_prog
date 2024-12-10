@@ -74,6 +74,12 @@ namespace ProjetSession_prog
                 erreur_coutOrganisation.Visibility = Visibility.Visible;
                 Valide = false;
             }
+            else if (Convert.ToDouble(prix_vente.Text) < Convert.ToDouble(cout_organisation.Text))
+            {
+                erreur_coutOrganisation.Text = "Le cout d'organisation doit être inférieur au prix de vente";
+                erreur_coutOrganisation.Visibility = Visibility.Visible;
+                Valide = false;
+            }
             else
             {
                 erreur_coutOrganisation.Visibility = Visibility.Collapsed;
@@ -103,6 +109,12 @@ namespace ProjetSession_prog
             else if (!double.TryParse(prix_vente.Text, out double prixVente))
             {
                 erreur_prixVente.Text = "La valeur insérée doit être numérique";
+                erreur_prixVente.Visibility = Visibility.Visible;
+                Valide = false;
+            }
+            else if (Convert.ToDouble(prix_vente.Text) < Convert.ToDouble(cout_organisation.Text))
+            {
+                erreur_prixVente.Text = "Le prix de vente doit être supérieur au coût organisation";
                 erreur_prixVente.Visibility = Visibility.Visible;
                 Valide = false;
             }

@@ -41,9 +41,9 @@ namespace ProjetSession_prog
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            Valide = true;  // Par défaut, on suppose que tout est valide
+            Valide = true;  
 
-            // Validation du champ "Nom"
+          
             if (string.IsNullOrEmpty(nom_activite.Text))
             {
                 erreur_nom.Text = "Le champ nom ne peut être vide";
@@ -56,7 +56,7 @@ namespace ProjetSession_prog
                 Nom = nom_activite.Text;
             }
 
-            // Validation de la catégorie sélectionnée
+           
             if (id_categorie.SelectedIndex == -1)
             {
                 erreur_categorie.Text = "Veuillez sélectionner une catégorie";
@@ -69,7 +69,7 @@ namespace ProjetSession_prog
                 Id_Categorie = id_categorie.SelectedIndex;
             }
 
-            // Validation du coût d'organisation (chiffres uniquement)
+           
             if (string.IsNullOrEmpty(cout_organisation.Text))
             {
                 erreur_coutOrganisation.Text = "Ce champ doit être rempli";
@@ -82,13 +82,19 @@ namespace ProjetSession_prog
                 erreur_coutOrganisation.Visibility = Visibility.Visible;
                 Valide = false;
             }
+            else if (Convert.ToDouble(prix_vente.Text) < Convert.ToDouble(cout_organisation.Text))
+            {
+                erreur_coutOrganisation.Text = "Le cout d'organisation doit être inférieur au prix de vente";
+                erreur_coutOrganisation.Visibility = Visibility.Visible;
+                Valide = false;
+            }
             else
             {
                 erreur_coutOrganisation.Visibility = Visibility.Collapsed;
-                Cout_Organisation = coutOrganisation;
+                Cout_Organisation = Convert.ToDouble(cout_organisation.Text);
             }
 
-            // Validation du champ "Type"
+          
             if (string.IsNullOrEmpty(type.Text))
             {
                 erreur_type.Text = "Le champ type ne peut être vide";
@@ -101,7 +107,7 @@ namespace ProjetSession_prog
                 Type = type.Text;
             }
 
-            // Validation du prix de vente (chiffres uniquement)
+           
             if (string.IsNullOrEmpty(prix_vente.Text))
             {
                 erreur_prixVente.Text = "Ce champ doit être rempli";
@@ -114,13 +120,18 @@ namespace ProjetSession_prog
                 erreur_prixVente.Visibility = Visibility.Visible;
                 Valide = false;
             }
+            else if (Convert.ToDouble(prix_vente.Text) < Convert.ToDouble(cout_organisation.Text))
+            {
+                erreur_prixVente.Text = "Le prix de vente doit être supérieur au coût organisation";
+                erreur_prixVente.Visibility = Visibility.Visible;
+                Valide = false;
+            }
             else
             {
                 erreur_prixVente.Visibility = Visibility.Collapsed;
-                Prix_Vente = prixVente;
+                Prix_Vente = Convert.ToDouble(prix_vente.Text);
             }
 
-            // Si l'une des validations échoue, annuler la fermeture du dialog
             if (!Valide)
             {
                 args.Cancel = true;
