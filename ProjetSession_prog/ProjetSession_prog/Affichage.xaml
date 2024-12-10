@@ -34,19 +34,19 @@
             <GridView x:Name="liste_adherents" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="1">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Adherents" >
-                        <StackPanel Width="210" Padding="15" Margin="30" Background="CornflowerBlue" CornerRadius="30">
+                        <StackPanel Width="220" Padding="15" Margin="20" Background="CornflowerBlue" CornerRadius="30">
                         <StackPanel Orientation="Vertical"
                                 Margin="5" HorizontalAlignment="Stretch">
                                 <TextBlock Text="Nom : " Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
+                                <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10" Foreground="GreenYellow"/>
                                 <TextBlock Text="Prénom : " Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Prenom}" Margin="5,5,5,10"/>
+                                <TextBlock Text="{x:Bind Prenom}" Margin="5,5,5,10" Foreground="GreenYellow"/>
                                 <TextBlock Text="Adresse : " Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Adresse}" Margin="5,5,5,10"/>
+                                <TextBlock Text="{x:Bind Adresse}" Margin="5,5,5,10" Foreground="GreenYellow"/>
                                 <TextBlock Text="Date de naissance : " Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Date_Naissance}" Margin="5,5,5,10"/>
+                                <TextBlock Text="{x:Bind Date_Naissance}" Margin="5,5,5,10" Foreground="GreenYellow"/>
                                 <TextBlock Text="Age : " Margin="5,5,5,10"/>
-                                <TextBlock Text="{x:Bind Age}" Margin="5,5,5,10"/>
+                                <TextBlock Text="{x:Bind Age}" Margin="5,5,5,10" Foreground="GreenYellow"/>
 
                             <Button x:Name="afficher_seances" Margin="5">
                                 <Button.Flyout>
@@ -85,20 +85,21 @@
         <GridView x:Name="liste_activites" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="1">
                 <GridView.ItemTemplate >
                     <DataTemplate x:DataType="local:Activites" >
-                        <StackPanel Width="210" Padding="15" Margin="30" Background="DarkOliveGreen" CornerRadius="30">
+                        <StackPanel Width="220" Padding="15" Margin="20" Background="DarkOliveGreen" CornerRadius="30">
                         <StackPanel Orientation="Vertical"
                                 Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock Text="Nom de l'activité : " Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10" Foreground="LightBlue"/>
                             <TextBlock Text="Type : " Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Type}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Type}" Margin="5,5,5,10" Foreground="LightBlue"/>
                             <TextBlock Text="Coût de l'organisation ($) : " Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Cout_organisation}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Cout_organisation}" Margin="5,5,5,10" Foreground="LightBlue"/>
                             <TextBlock Text="Prix de vente ($) : " Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Prix_vente}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Prix_vente}" Margin="5,5,5,10" Foreground="LightBlue"/>
 
-                            <StackPanel Background="ForestGreen" CornerRadius="10" >
-                            <Button x:Name="afficher_seances" Margin="5" CornerRadius="10">
+                            <StackPanel Background="ForestGreen" CornerRadius="10" HorizontalAlignment="Center">
+                                <TextBlock Text="Séances" Margin="5"/>
+                                <Button x:Name="afficher_seances" Margin="5" CornerRadius="10">
                                 <Button.Flyout>
                                     <Flyout>
                                         
@@ -109,7 +110,7 @@
                                        
                                     </Flyout>
                                 </Button.Flyout>
-                                <TextBlock Text="Voir les séances"/>
+                                <TextBlock Text="Inscrivez-vous"/>
 
                             </Button>
 
