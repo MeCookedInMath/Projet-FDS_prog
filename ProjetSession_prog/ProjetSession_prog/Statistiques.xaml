@@ -9,9 +9,53 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Page Statistiques"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Padding="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Frame x:Name="mainFrame"/>
-    </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="stckpnl_stat_1" Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite1" Text="Nombre total d'activités" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Text=" 🔥" FontSize="22" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel x:Name="stckpnl_stat_2" Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite2" Text="Nombre total d'adhérents" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Text=" 📊" FontSize="22" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel x:Name="stckpnl_stat_3" Grid.Row="2" Grid.Column="0" Margin="10">
+                <TextBlock x:Name="TextBlockActivite3" Text="Adhérents par activité" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel x:Name="stckpnl_stat_4" Grid.Row="3" Grid.Column="0" Orientation="Vertical" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite4" Text="Moyenne des notes pour chaque activité" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+
+            </StackPanel>
+
+            <StackPanel x:Name="stckpnl_stat_5" Grid.Row="4" Grid.Column="0" Orientation="Vertical" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite5" Text="Moyenne des notes" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Text=" 🏅" FontSize="22" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel x:Name="stckpnl_stat_6" Grid.Row="5" Grid.Column="0" Orientation="Vertical" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite6" Text="Prix moyen pour chaque activité" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <StackPanel x:Name="stckpnl_stat_7" Grid.Row="6" Grid.Column="0" Orientation="Horizontal" Margin="0,15">
+                <TextBlock x:Name="TextBlockActivite7" Text="Participant avec le plus de séances" Foreground="#0078D4" FontSize="22" FontWeight="Bold" VerticalAlignment="Center" />
+                <TextBlock Text=" 🎯" FontSize="22" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

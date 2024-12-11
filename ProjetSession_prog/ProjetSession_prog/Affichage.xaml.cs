@@ -34,19 +34,19 @@ namespace ProjetSession_prog
             liste_activites.ItemsSource = Singleton.getInstance().getListeActivites();
             liste_adherents.ItemsSource = Singleton.getInstance().getListeAdherents();
 
+
         }
 
-
         
+
+
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-           
-
             try
             {
-                if (Singleton.getInstance().IsSetConnection() == true || Singleton.getInstance().IsSetRole() == "adherent")
+                if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "adherent")
                 {
                     ListView listView = sender as ListView;
 
@@ -395,5 +395,10 @@ namespace ProjetSession_prog
                 Debug.WriteLine(ex.Message);
             }
         }
+
+
+        
+
+
     }
 }

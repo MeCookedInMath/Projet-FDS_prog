@@ -32,18 +32,18 @@ namespace ProjetSession_prog
 
             this.InitializeComponent();
             
-            mainFrame.Navigate(typeof(Affichage));
 
+            mainFrame.Navigate(typeof(Affichage));
 
             UpdateMenuVisibilityAsync();
         }
 
-        private async Task UpdateMenuVisibilityAsync()
+        public async Task UpdateMenuVisibilityAsync()
         {
 
 
             await Task.Yield();
-            // Vérifier si l'utilisateur est un administrateur
+            
             if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "admin")
             {
                 // Afficher les éléments réservés aux administrateurs
@@ -106,9 +106,15 @@ namespace ProjetSession_prog
                     break;
             }
 
+            
+
         }
 
-        
+
+
+       
+
+
 
 
     }

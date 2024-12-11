@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <NavigationView PaneDisplayMode="Left" PaneTitle="Site du centre de loisirs" Foreground="Gold" FontSize="20" FontWeight="Bold" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
+    <NavigationView x:Name="nav" PaneDisplayMode="Left" PaneTitle="Site du centre de loisirs" Foreground="Gold" FontSize="20" FontWeight="Bold"  SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
             <NavigationViewItemHeader x:Name="navItemHeader"/>
             <NavigationViewItem Content="Authentification" x:Name="iAuthentification" Icon="People" Background="IndianRed" Tag="Page1"/>

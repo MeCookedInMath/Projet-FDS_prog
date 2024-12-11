@@ -30,10 +30,16 @@ namespace ProjetSession_prog
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+        
+        public static Window MainWindow { get; private set; }
         public App()
         {
             this.InitializeComponent();
+            MainWindow = new MainWindow();
         }
+
+        
+        
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

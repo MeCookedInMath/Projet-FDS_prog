@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
 using System;
@@ -8,6 +9,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinRT.Interop;
 
 namespace ProjetSession_prog
 {
@@ -680,7 +684,378 @@ namespace ProjetSession_prog
         }
 
 
+        public int GetNombreActivites()
+        {
+            int nombreActivites = 0;
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "SELECT COUNT(*) FROM activites";
+                con.Open();
+                nombreActivites = Convert.ToInt32(commande.ExecuteScalar());
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+            return nombreActivites;
+        }
 
+
+
+        public int GetNombreAdherents()
+        {
+            int nombreAdherents = 0;
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "SELECT COUNT(*) FROM adherents";
+                con.Open();
+                nombreAdherents = Convert.ToInt32(commande.ExecuteScalar());
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+            return nombreAdherents;
+        }
+
+        public List<string> GetTopSeances(int limit = 5)
+        {
+            List<string> topSeances = new List<string>();
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = $"SELECT nom_activite, COUNT(id_adherent) AS nb_inscriptions FROM inscriptions INNER JOIN seances ON inscriptions.id_seance = seances.id GROUP BY nom_activite ORDER BY nb_inscriptions DESC LIMIT {limit}";
+                con.Open();
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    string seanceInfo = $"{r["nom_activite"]} - {r["nb_inscriptions"]} inscriptions";
+                    topSeances.Add(seanceInfo);
+                }
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+            return topSeances;
+        }
+        public List<(string ActiviteNom, double Moyenne)> GetMoyenneNote()
+        {
+            List<(string ActiviteNom, double Moyenne)> moyennes = new List<(string ActiviteNom, double Moyenne)>();
+
+            try
+            {
+                string select = "SELECT activite_nom, moyenne FROM moyenne_Note;";
+                MySqlCommand commande = new MySqlCommand(select, con);
+                con.Open();
+
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    string activiteNom = r["activite_nom"].ToString();
+                    double moyenne = r["moyenne"] != DBNull.Value ? Convert.ToDouble(r["moyenne"]) : 0.0;
+
+                    moyennes.Add((activiteNom, moyenne));
+                }
+
+                r.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération des moyennes : {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return moyennes;
+        }
+
+        public List<(string ActiviteNom, int NombreParticipants)> GetNombreParticipantsParActivite()
+        {
+            List<(string ActiviteNom, int NombreParticipants)> participantsParActivite = new List<(string ActiviteNom, int NombreParticipants)>();
+
+            try
+            {
+                string select = "SELECT nom, nbr_participants FROM nbr_participants_activite;";
+                MySqlCommand commande = new MySqlCommand(select, con);
+                con.Open();
+
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    string activiteNom = r["nom"].ToString();
+                    int nbrParticipants = r["nbr_participants"] != DBNull.Value ? Convert.ToInt32(r["nbr_participants"]) : 0;
+
+                    participantsParActivite.Add((activiteNom, nbrParticipants));
+                }
+
+                r.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération des participants par activité : {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return participantsParActivite;
+        }
+
+        public List<(string AdherentId, string ActiviteNom, double PrixMoyen)> GetPrixMoyenParActiviteParParticipant()
+        {
+            List<(string AdherentId, string ActiviteNom, double PrixMoyen)> prixMoyenListe = new List<(string AdherentId, string ActiviteNom, double PrixMoyen)>();
+
+            try
+            {
+                string select = "SELECT id_adherent, activite_nom, prix_moyen FROM moy_prix_activite;";
+                MySqlCommand commande = new MySqlCommand(select, con);
+                con.Open();
+
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    string adherentId = r["id_adherent"].ToString();
+                    string activiteNom = r["activite_nom"].ToString();
+                    double prixMoyen = r["prix_moyen"] != DBNull.Value ? Convert.ToDouble(r["prix_moyen"]) : 0;
+
+                    prixMoyenListe.Add((adherentId, activiteNom, prixMoyen));
+                }
+
+                r.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération du prix moyen par activité : {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return prixMoyenListe;
+        }
+
+        public (string NoIdentification, string Nom, string Prenom, int NombreSeances) GetParticipantAvecPlusDeSeances()
+        {
+            (string NoIdentification, string Nom, string Prenom, int NombreSeances) participant = (null, null, null, 0);
+
+            try
+            {
+                string select = "SELECT no_identification, nom, prenom, nombre_seances FROM participant_plusseance;";
+                MySqlCommand commande = new MySqlCommand(select, con);
+                con.Open();
+
+                MySqlDataReader r = commande.ExecuteReader();
+                if (r.Read())
+                {
+                    participant.NoIdentification = r["no_identification"].ToString();
+                    participant.Nom = r["nom"].ToString();
+                    participant.Prenom = r["prenom"].ToString();
+                    participant.NombreSeances = Convert.ToInt32(r["nombre_seances"]);
+                }
+
+                r.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération du participant avec le plus de séances : {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return participant;
+        }
+        public async Task ExportActivitiesToCSV(List<Activites> activities)
+        {
+
+            StringBuilder csvData = new StringBuilder();
+            csvData.AppendLine("Nom Activité,Catégorie,Type,Coût d'Organisation, Prix de Vente");
+
+            foreach (Activites activity in activities)
+            {
+                csvData.AppendLine($"{activity.Nom},{activity.Id_Categorie},{activity.Type},{activity.Cout_organisation},{activity.Prix_vente}");
+            }
+
+            FileSavePicker savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop
+            };
+            savePicker.FileTypeChoices.Add("CSV", new List<string>() { ".csv" });
+            savePicker.SuggestedFileName = "activites_export";
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+
+                await FileIO.WriteTextAsync(file, csvData.ToString());
+                var dialog = new ContentDialog()
+                {
+                    Title = "Exportation réussie",
+                    Content = "Les activités ont été exportées avec succès.",
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+            }
+            else
+            {
+
+                var dialog = new ContentDialog()
+                {
+                    Title = "Erreur",
+                    Content = "Aucun fichier n'a été sélectionné.",
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+            }
+        }
+
+
+
+        public List<Activites> GetActivities()
+        {
+            List<Activites> activitiesList = new List<Activites>();
+
+
+            string select = "SELECT * FROM activites";
+            MySqlCommand cmd = new MySqlCommand(select, con);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string name = reader["nom"].ToString();
+                    int categoryId = Convert.ToInt32(reader["id_categorie"]);
+                    string type = reader["type"].ToString();
+                    double cost = Convert.ToDouble(reader["cout_organisation"]);
+                    double price = Convert.ToDouble(reader["prix_vente"]);
+
+                    activitiesList.Add(new Activites(name, categoryId, type, cost, price));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération des activités: {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return activitiesList;
+        }
+
+        public async void Btn_Exporter_Adherents_Click(object sender, RoutedEventArgs e)
+        {
+
+            var adherentsList = Singleton.getInstance().GetAdherents();
+
+
+            StringBuilder csvData = new StringBuilder();
+            csvData.AppendLine("Numéro d'identification,Nom,Prénom,Adresse,Date de naissance,Âge");
+
+
+            foreach (Adherents adherent in adherentsList)
+            {
+                csvData.AppendLine($"{adherent.No_Identification},{adherent.Nom},{adherent.Prenom},{adherent.Adresse},{adherent.Date_Naissance},{adherent.Age}");
+            }
+
+
+            FileSavePicker savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.Desktop
+            };
+            savePicker.FileTypeChoices.Add("CSV", new List<string> { ".csv" });
+            savePicker.SuggestedFileName = "adherents_export";
+
+
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(Window.Current);
+            InitializeWithWindow.Initialize(savePicker, hwnd);
+
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+
+            if (file != null)
+            {
+
+                await FileIO.WriteTextAsync(file, csvData.ToString());
+
+
+                var dialog = new ContentDialog()
+                {
+                    Title = "Exportation réussie",
+                    Content = "Les adhérents ont été exportés avec succès.",
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+            }
+            else
+            {
+
+                var dialog = new ContentDialog()
+                {
+                    Title = "Erreur",
+                    Content = "Aucun fichier n'a été sélectionné.",
+                    CloseButtonText = "OK"
+                };
+                await dialog.ShowAsync();
+            }
+        }
+        public List<Adherents> GetAdherents()
+        {
+            List<Adherents> adherentsList = new List<Adherents>();
+
+            string query = "SELECT * FROM adherents";
+            MySqlCommand cmd = new MySqlCommand(query, con);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string no_identification = reader["no_identification"].ToString();
+                    string nom = reader["nom"].ToString();
+                    string prenom = reader["prenom"].ToString();
+                    string adresse = reader["adresse"].ToString();
+                    string date_naissance = reader["date_naissance"].ToString();
+                    int age = Convert.ToInt32(reader["age"]);
+
+                    adherentsList.Add(new Adherents(no_identification, nom, prenom, adresse, date_naissance, age));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Erreur lors de la récupération des adhérents: {ex.Message}");
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return adherentsList;
+        }
 
 
 

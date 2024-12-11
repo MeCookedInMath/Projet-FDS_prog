@@ -24,25 +24,60 @@
 
 
 
-        <StackPanel x:Name="stckpnl_ajout_activites" Grid.Row="0"  Grid.Column="0">
 
-            <Button Content="Activités" x:Name="Btn_AjoutActivites" Click="Btn_AjoutActivites_Click" />
+        <StackPanel x:Name="stckpnl_ajout_activites" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Activités" x:Name="Btn_AjoutActivites" Click="Btn_AjoutActivites_Click"
+                  Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                  Width="180" Height="50" Margin="0,10" CornerRadius="10" />
+            <TextBlock x:Name="validation_click" Foreground="Green" HorizontalAlignment="Center" />
 
-            <TextBlock x:Name="validation_click" Foreground="Green"/>
+
+
+            <Button Content="Exporter Activités" x:Name="Btn_Exporter_Activites" Click="Btn_Exporter_Activites_Click" Background="#00B0FF" 
+            Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" 
+            FontWeight="Bold"
+            Width="180" 
+            Height="50" 
+            Margin="0,10" 
+            CornerRadius="10" />
+
         </StackPanel>
 
-        <StackPanel x:Name="stckpnl_ajout_adherents" Grid.Row="0"  Grid.Column="1">
 
-            <Button Content="Adhérents" x:Name="Btn_AjoutAdherents" Click="Btn_AjoutAdherents_Click" />
 
-            <TextBlock x:Name="validation_click1" Foreground="Green"/>
+
+
+
+        <StackPanel x:Name="stckpnl_ajout_adherents" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Adhérents" x:Name="Btn_AjoutAdherents" Click="Btn_AjoutAdherents_Click"
+                  Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                  Width="180" Height="50" Margin="0,10" CornerRadius="10" />
+            <TextBlock x:Name="validation_click1" Foreground="Green" HorizontalAlignment="Center" />
+
+
+            <Button Content="Exporter adhérent" x:Name="Btn_Exporter_adhérent" Click="Btn_Exporter_Adherents_Click"
+                Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                Width="180" Height="50" Margin="0,10" CornerRadius="10" />
         </StackPanel>
 
-        <StackPanel x:Name="stckpnl_ajout_seances" Grid.Row="0"  Grid.Column="2">
 
-            <Button Content="Séances" x:Name="Btn_AjoutSeances" Click="Btn_AjoutSeances_Click" />
 
-            <TextBlock x:Name="validation_click2" Foreground="Green"/>
+
+
+        <StackPanel x:Name="stckpnl_ajout_seances" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Séances" x:Name="Btn_AjoutSeances" Click="Btn_AjoutSeances_Click"
+                Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                Width="180" Height="50" Margin="0,10" CornerRadius="10" />
+            <TextBlock x:Name="validation_click2" Foreground="Green" HorizontalAlignment="Center" />
+
+
         </StackPanel>
+
+
+
+
+
+
+
     </Grid>
 </Page>

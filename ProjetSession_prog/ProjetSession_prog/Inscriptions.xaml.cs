@@ -49,23 +49,31 @@ namespace ProjetSession_prog
 
             ContentDialogResult resultat = await dialog.ShowAsync();
 
-
-            if (resultat == ContentDialogResult.Primary)
+            if (Singleton.getInstance().IsSetConnection() == true && Singleton.getInstance().IsSetRole() == "adherent")
             {
-                try
+                if (resultat == ContentDialogResult.Primary)
                 {
-                    Singleton.getInstance().supprimerInscriptions(Singleton.getInstance().matricule_connection(), seance.Id);
+                    try
+                    {
+                        Singleton.getInstance().supprimerInscriptions(Singleton.getInstance().matricule_connection(), seance.Id);
 
-                    Singleton.getInstance().setMessageUtilisateur("L'adhérent a bien été désinscrits de cette séance", this);
+                        Singleton.getInstance().setMessageUtilisateur("L'adhérent a bien été désinscrits de cette séance", this);
+                    }
+                    catch(MySqlException ex) {
+                        Debug.WriteLine(ex.Message);
+
+                        Singleton.getInstance().setMessageUtilisateur("L'adhérent n'a pas été désinscrits de cette séance", this);
+                    }
+
+                    listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
                 }
-                catch(MySqlException ex) {
-                    Debug.WriteLine(ex.Message);
-
-                    Singleton.getInstance().setMessageUtilisateur("L'adhérent n'a pas été désinscrits de cette séance", this);
-                }
-
-                listeSeancesParAdherent.ItemsSource = Singleton.getInstance().getListeSeancesPourAdhérents(Singleton.getInstance().matricule_connection());
             }
+            else {
+                Singleton.getInstance().setMessageUtilisateur("Vous ne pouvez vous inscrire à une activité en tant qu'adhérent", this);
+                this.Frame.Navigate(typeof(Affichage));
+            }
+
+            
         }
 
         

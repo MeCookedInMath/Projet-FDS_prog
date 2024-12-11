@@ -9,42 +9,41 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid Padding="20">
 
         <Grid.RowDefinitions>
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
-        <TextBlock x:Name="titre" Text="Page Authentification" Grid.Row="0"/>
-         <Button x:Name="deconnect_btn"  Click="deconnect_btn_Click">Déconnecter</Button>
 
 
-        <StackPanel x:Name="stckpnl_connexion_admin" Grid.Row="1"  Grid.Column="0">
-            
-            <Button Content="Connexion Admin" x:Name="connexion_admin" Click="connexion_admin_Click" Grid.Column="1"/>
 
-            <TextBlock x:Name="validation_connexion1" Foreground="Green"/>
+
+
+        <Button x:Name="deconnect_btn" Content="Déconnecter" HorizontalAlignment="Left" VerticalAlignment="Top" Click="deconnect_btn_Click"
+            Background="#FF5722" Foreground="White" BorderBrush="#FF5722" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+            Margin="0,10,0,0" Width="120" Height="40" CornerRadius="10" />
+
+        <StackPanel x:Name="stckpnl_connexion_admin" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Connexion Admin" x:Name="connexion_admin" Click="connexion_admin_Click"
+                Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                Width="180" Height="50" Margin="0,10" CornerRadius="10" />
+            <TextBlock x:Name="validation_connexion1" Foreground="Green" HorizontalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel x:Name="stckpnl_connexion_adherents" Grid.Row="1"  Grid.Column="1">
-
-            <Button Content="Connexion Adherent" x:Name="connexion_adherent" Click="connexion_adherent_Click" Grid.Column="1"/>
-
-            <TextBlock x:Name="validation_connexion2" Foreground="Green"/>
+        <StackPanel x:Name="stckpnl_connexion_adherents" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Connexion Adherent" x:Name="connexion_adherent" Click="connexion_adherent_Click"
+                Background="#00B0FF" Foreground="White" BorderBrush="#00B0FF" BorderThickness="2" Padding="10,5" FontWeight="Bold"
+                Width="180" Height="50" Margin="0,10" CornerRadius="10" />
+            <TextBlock x:Name="validation_connexion2" Foreground="Green" HorizontalAlignment="Center" />
         </StackPanel>
 
-
-
-        <Frame x:Name="mainFrame"></Frame>
-
-
+        <Frame x:Name="mainFrame" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20" />
     </Grid>
 </Page>
