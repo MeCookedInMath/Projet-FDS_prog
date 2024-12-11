@@ -334,6 +334,7 @@ namespace ProjetSession_prog
                 else
                 {
                     Debug.WriteLine("Identifiants invalides ou utilisateur inexistant.");
+                    
                 }
             }
             catch (MySqlException ex)

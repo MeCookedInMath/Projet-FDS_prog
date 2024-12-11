@@ -25,10 +25,15 @@
         <!-- DataTemplate definition -->
                 <DataTemplate x:DataType="local:Seances">
                     <StackPanel>
+                        <TextBlock Text="Nom de l'activité"  Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Nom_Activite}" Margin="0,5,0,5"/>
+                        <TextBlock Text="Date de la séance"  Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Date}" Margin="0,5,0,5"/>
+                        <TextBlock Text="Heure de la séance"  Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Heure}" Margin="0,5,0,5"/>
+                        <TextBlock Text="Nombre de places"  Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Nbr_Places}" Margin="0,5,0,5"/>
+                        <TextBlock Text="Note de la séance"  Margin="0,5,0,5"/>
                         <TextBlock Text="{x:Bind Note}" Margin="0,5,0,5"/>
                         <Button Content="Évaluer" x:Name="evaluer_seances" Click="evaluer_seances_Click"/>
                     </StackPanel>

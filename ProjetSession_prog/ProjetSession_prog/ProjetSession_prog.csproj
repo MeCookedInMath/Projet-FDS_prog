@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Affichage.xaml" />
+    <None Remove="AffichageActivites.xaml" />
     <None Remove="Ajout_Activites.xaml" />
     <None Remove="Ajout_Adherents.xaml" />
     <None Remove="Ajout_Seances.xaml" />
@@ -52,6 +53,11 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AffichageActivites.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="EvaluerSeances.xaml">

@@ -73,17 +73,9 @@ namespace ProjetSession_prog
             }
             else
             {
-                if (Regex.IsMatch(adresse.Text, "^[0-9] [a-z]$")) // rechecker le regex demain au plus sacrant
-                {
-                    erreur_adresse.Visibility = Visibility.Collapsed;
-                    Adresse = adresse.Text;
-                }
-                else
-                {
-                    erreur_adresse.Visibility = Visibility.Visible;
-                    erreur_adresse.Text = "L'adresse donnée n'est pas conforme au format voulu.(ex : 4291 rang de l'acadie)";
-                    Valide = false;
-                }
+                erreur_adresse.Visibility = Visibility.Collapsed;
+                Adresse = adresse.Text;
+                
             }
 
             

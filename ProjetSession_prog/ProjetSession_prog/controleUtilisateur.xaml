@@ -12,7 +12,7 @@
 
     <StackPanel>
         <TextBox x:Name="matricule" Margin="5" Header="Votre matricule"/>
-        <PasswordBox x:Name="pwd_user" Margin="5" Header="Mot de passe (Votre prénom)"/>
+        <PasswordBox x:Name="pwd_user" Margin="5" Header="Mot de passe (votre prénom si vous êtes un adhérent)"/>
     </StackPanel>
 
 </ContentDialog>

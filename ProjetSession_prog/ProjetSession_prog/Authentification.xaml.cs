@@ -56,7 +56,12 @@ namespace ProjetSession_prog
 
             if (resultat == ContentDialogResult.Primary)
             {
-                int matricule = Convert.ToInt32(dialog.Matricule);
+                int matricule = 0;
+                if (Int32.TryParse(dialog.Matricule, out int nombre))
+                {
+                    matricule = Convert.ToInt32(dialog.Matricule);
+                }
+                
                 string mdp = dialog.Mdp;
 
 

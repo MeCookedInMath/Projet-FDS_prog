@@ -14,7 +14,9 @@
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Statistiques" x:Name="iStatistiques" Icon="Add" Background="DarkOliveGreen" Tag="Page2"/>
             <NavigationViewItemSeparator />
-            <NavigationViewItem Content="Affichage" x:Name="iAffichage" Icon="People" Background="IndianRed" Tag="Page3"/>
+            <NavigationViewItem Content="Adhérents" x:Name="iAffichageAdherents" Icon="People" Background="IndianRed" Tag="Page3"/>
+            <NavigationViewItemSeparator />
+            <NavigationViewItem Content="Activités" x:Name="iAffichageActivites" Icon="People" Background="IndianRed" Tag="Page3"/>
             <NavigationViewItemSeparator />
             <NavigationViewItem Content="Ajouter" x:Name="iAjouter" Icon="People" Background="PaleGoldenrod" Tag="Page4"/>
             <NavigationViewItemSeparator />

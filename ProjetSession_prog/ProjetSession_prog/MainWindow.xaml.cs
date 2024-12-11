@@ -33,7 +33,7 @@ namespace ProjetSession_prog
             this.InitializeComponent();
             
 
-            mainFrame.Navigate(typeof(Affichage));
+            mainFrame.Navigate(typeof(AffichageActivites));
 
             UpdateMenuVisibilityAsync();
         }
@@ -91,8 +91,11 @@ namespace ProjetSession_prog
                 case "iStatistiques":
                     mainFrame.Navigate(typeof(Statistiques));
                     break;
-                case "iAffichage":
+                case "iAffichageAdherents":
                     mainFrame.Navigate(typeof(Affichage));
+                    break;
+                case "iAffichageActivites":
+                    mainFrame.Navigate(typeof(AffichageActivites));
                     break;
                 case "iAjouter":
                     mainFrame.Navigate(typeof(PageAjouter));
